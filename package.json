@@ -20,7 +20,8 @@
   	"mongodb": "*",
   	"express": "*",
   	"request": "*",
-  	"hbs": "*"
+  	"hbs": "*",
+  	"body-parser": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
