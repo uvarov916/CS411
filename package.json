@@ -1,0 +1,31 @@
+{
+  "name": "rain-or-shine",
+  "description": "This is the project for CS411 (Software Engineering).",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uvarovis/CS411.git"
+  },
+  "author": "Hwa-seung Erstling, Duomin Ji, Jarrod Lewis and Ivan Uvarov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uvarovis/CS411/issues"
+  },
+  "homepage": "https://github.com/uvarovis/CS411#readme",
+  "dependencies": {
+  	"mongodb": "*",
+  	"express": "*",
+  	"request": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2"
+  }
+}
