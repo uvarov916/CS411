@@ -19,7 +19,8 @@
   "dependencies": {
   	"mongodb": "*",
   	"express": "*",
-  	"request": "*"
+  	"request": "*",
+  	"hbs": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
