@@ -2,6 +2,7 @@
 var express = require("express"),
 	hbs = require("hbs"),
 	bodyParser = require('body-parser'),
+	var request = require('request'),
 	app = express();
  
 // Register hbs to render views 
@@ -9,7 +10,6 @@ app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 // Serve static files
 app.use(express.static('public'));
-
 
 
 // -----------------------------------------
@@ -23,8 +23,8 @@ app.get("/", function(req, res) {
 	});
 });
 
-app.get("/get/:test", function(req, res) {
-  	res.send(req.params.test)
+app.get("/location", function(req, res) {
+  	res.send('longtitude, ' + req.query.location);
 })
 
 app.get("*", function(req, res) {
@@ -39,3 +39,9 @@ var server = app.listen(3000, function () {
   var port = server.address().port;
   console.log('Server started on port', port);
 });
+
+
+// -----------------------------------------
+// GET
+// -----------------------------------------
+

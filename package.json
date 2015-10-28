@@ -17,11 +17,10 @@
   },
   "homepage": "https://github.com/uvarovis/CS411#readme",
   "dependencies": {
-  	"mongodb": "*",
   	"express": "*",
-  	"request": "*",
   	"hbs": "*",
-  	"body-parser": "*"
+  	"body-parser": "*",
+    "request": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
