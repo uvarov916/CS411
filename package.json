@@ -17,12 +17,13 @@
   },
   "homepage": "https://github.com/uvarovis/CS411#readme",
   "dependencies": {
-  	"express": "*",
-  	"hbs": "*",
-  	"body-parser": "*",
+    "express": "*",
+    "hbs": "*",
+    "body-parser": "*",
     "request": "*"
   },
   "devDependencies": {
+    "bower": "^1.6.5",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-rename": "^1.2.2",

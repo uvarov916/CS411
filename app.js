@@ -1,3 +1,5 @@
+'use strict';
+
 // Modules
 var express = require("express"),
 	hbs = require("hbs"),
@@ -20,29 +22,18 @@ app.use(bodyParser.urlencoded({
 // GET
 // -----------------------------------------
 
-/* app.get("/", function(req, res) {
-	res.render('index', {
-		"title": "Home",
-		"test": "testing this shit"
-	});
-});
-
+/*
 app.get("/location", function(req, res) {
   	res.send('longtitude, ' + req.query.location);
 }) */
 
 app.get('/', function(req, res){
-  // The form's action is '/' and its method is 'POST',
+  // The form's action is '/' and its method is 'GET',
   // so the `app.post('/', ...` route will receive the
   // result of our form
-  var html = '<form action="/location-temperature" method="post">' +
-               'Enter your address:' +
-               '<input type="text" name="userLocation" />' +
-               '<br>' +
-               '<button type="submit">Submit</button>' +
-            '</form>';
-               
-  res.send(html);
+  res.render('index', {
+		"page-title": "Home"
+	});
 });
 
 // This route receives the posted form.
