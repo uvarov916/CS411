@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="columns small-12 large-10 small-centered">
 			<form action="/location-temperature" method="POST" name="search-form">
-				<input type="text" name="userLocation" placeholder="Enter location" value="{{search-term}}"/>
+				<input type="text" name="userLocation" placeholder="Enter location"/>
 				<input type="submit" value="Search">
 			</form>
 		</div>
@@ -12,8 +12,20 @@
 <section class="search-results">
 	<div class="row">
 		<div class="columns small-12 large-10 small-centered">
+			<h2>Now</h2>
+			<p><i class="wi {{weather-icon}}"></i></p>
 			<p><b>Summary:</b> {{weather-summary}}</p>
-			<p><b>Temperature:</b> {{current-temp}}</p>
+			<p><b>Temperature:</b> {{current-temp}} °F</p>
+
+			<h2>This week</h2>
+			{{#each days}}
+				<div class="day">
+					<h3>{{date}}</h3>
+					<p><i class="wi {{iconClass}}"></i>&nbsp;&nbsp;&nbsp;{{minTemp}} - {{maxTemp}} °F</p>
+					<p>{{summary}}</p>
+				</div>
+			{{/each}}
+
 		</div>
 	</div>
 </section>

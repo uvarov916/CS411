@@ -951,6 +951,17 @@ select {
 body {
   font-weight: 300; }
 
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 3rem; }
+
+h3 {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase; }
+
 b {
   font-weight: 600; }
 
@@ -967,24 +978,31 @@ section.search {
   section.search input[type="text"] {
     width: 60%;
     padding-left: 1rem;
-    border-bottom: 1px solid #4A90E2;
+    border-bottom: 1px solid #9150A1;
     font-size: 20px; }
   section.search input[type="submit"] {
     width: 14%;
     background: none;
-    border: 1px solid #4A90E2;
+    border: 1px solid #9150A1;
     border-radius: 2px;
-    color: #4A90E2;
+    color: #9150A1;
     font-size: 16px;
     text-transform: uppercase;
     transition: .2s ease-in-out;
     cursor: pointer; }
     section.search input[type="submit"]:hover {
-      background: #4A90E2;
+      background: #9150A1;
       color: #fff;
       transition: .2s ease-in-out; }
 
-.search-results {
-  padding-top: 3rem; }
+.search-results i.wi {
+  font-size: 3rem;
+  color: #9150A1; }
+
+.search-results .day {
+  margin-bottom: 2rem; }
+  .search-results .day i.wi {
+    font-size: 2rem;
+    color: #9150A1; }
 
 /*# sourceMappingURL=app.css.map */

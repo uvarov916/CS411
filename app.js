@@ -47,22 +47,38 @@ app.post('/location-temperature', function(req, res){
   	var longitude = mylocdata.results[0].geometry.location.lng;
   	var fullAddr  = mylocdata.results[0].formatted_address;
   	//console.log(latitude);
-      //console.log(longitude);
+    //console.log(longitude);
   	
   	getWeatherData(latitude, longitude, function(weather) {
   	  var currentTemp    = weather.currently.temperature;
   	  var currentSummary = weather.currently.summary;
-  	  // var html = 'Searched Location: '   + fullAddr + '<br>' +
-  		// 	 'Weather Summary: '     + currentSummary + '<br>' +
-  		// 	 'Current Temperature: ' + currentTemp + '<br>' +
-  		// 	 '<a href="/">Search again.</a>';
-  	  // res.send(html)
+  	  var currentIcon = weather.currently.icon;
+      var iconClassToRender = getIconClass(currentIcon);
+
+      var dailyData = weather.daily.data;
+
+      var days = [];
+      for (var key in dailyData) {
+        var temp = {}
+        temp.iconClass = getIconClass(dailyData[key].icon);
+        temp.summary = dailyData[key].summary;
+
+        var d = new Date(dailyData[key].time * 1000);
+        temp.date = getDayString(d.getDay());
+
+        temp.minTemp = dailyData[key].temperatureMin;
+        temp.maxTemp = dailyData[key].temperatureMax;
+
+        days.push(temp);
+      }
 
   	  res.render('search-results', {
         "search-term": userLocation,
   			"page-title": "Search Results",
         "weather-summary": currentSummary,
-        "current-temp": currentTemp
+        "current-temp": currentTemp,
+        "weather-icon": iconClassToRender,
+        "days": days
   		});
   	
     });
@@ -113,8 +129,64 @@ var server = app.listen(3000, function () {
   console.log('Server started on port', port);
 });
 
+function getIconClass(currentIcon) {
+  var iconClassToRender = "";
+  if (currentIcon == "clear-day") {
+    iconClassToRender = "wi-day-sunny";
+  } else if (currentIcon == "clear-night") {
+    iconClassToRender = "wi-night-clear";
+  } else if (currentIcon == "rain") {
+    iconClassToRender = "wi-rain";
+  } else if (currentIcon == "snow") {
+    iconClassToRender = "wi-snow";
+  } else if (currentIcon == "sleet") {
+    iconClassToRender = "wi-sleet";
+  } else if (currentIcon == "wind") {
+    iconClassToRender = "wi-windy";
+  } else if (currentIcon == "fog") {
+    iconClassToRender = "wi-fog";
+  } else if (currentIcon == "cloudy") {
+    iconClassToRender = "wi-cloudy";
+  } else if (currentIcon == "partly-cloudy-day") {
+    iconClassToRender = "wi-day-cloudy";
+  } else if (currentIcon == "partly-cloudy-night") {
+    iconClassToRender = "wi-night-alt-cloudy";
+  }
 
-// -----------------------------------------
-// GET
-// -----------------------------------------
+  return iconClassToRender;
+}
+
+
+function getDayString(dayNumber) {
+  
+  var dayString = "Undefined";
+
+  switch(dayNumber) {
+    case 0:
+        var dayString = "Sunday";
+        break;
+    case 1:
+        var dayString = "Monday";
+        break;
+    case 2:
+        var dayString = "Tuesday";
+        break;
+    case 3:
+        var dayString = "Wednesday";
+        break;
+    case 4:
+        var dayString = "Thursday";
+        break;
+    case 5:
+        var dayString = "Friday";
+        break;
+    case 6:
+        var dayString = "Saturday";
+        break;
+    default:
+        var dayString = "Number is out of range";
+  }
+
+  return dayString;
+}
 
