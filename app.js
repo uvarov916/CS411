@@ -59,8 +59,11 @@ app.post('/location-temperature', function(req, res){
     //console.log(longitude);
 	
 	getWeatherData(latitude, longitude, function(weather) {
-	  var html = 'Searched Location: ' + fullAddr + '<br>' +
-				 'Current Temperature: ' + weather.currently.temperature + '<br>' +
+	  var currentTemp    = weather.currently.temperature
+	  var currentSummary = weather.currently.summary 
+	  var html = 'Searched Location: '   + fullAddr + '<br>' +
+				 'Weather Summary: '     + currentSummary + '<br>' +
+				 'Current Temperature: ' + currentTemp + '<br>' +
 				 '<a href="/">Search again.</a>';
 	  res.send(html)
 	  //console.log(weather.currently.temperature);
