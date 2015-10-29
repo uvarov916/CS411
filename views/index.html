@@ -1,6 +1,14 @@
-<form action="/location-temperature" method="POST">
-   <input type="text" name="userLocation" placeholder="Enter location"/>
-   <input type="submit" value="Search">
-</form>
-s
-dfsgfsdg
+<section class="search">
+	<div class="row">
+		<div class="columns small-12 large-10 small-centered">
+			<form action="/location-temperature" method="POST" name="search-form">
+				<input type="text" name="userLocation" placeholder="Enter location"/>
+				<input type="submit" value="Search">
+			</form>
+		</div>
+	</div>
+</section>
+
+<script type="text/javascript">
+	document.forms['search-form'].elements['userLocation'].focus();
+</script>

@@ -28,10 +28,10 @@ app.get("/location", function(req, res) {
 }) */
 
 app.get('/', function(req, res){
-  // The form's action is '/' and its method is 'GET',
-  // so the `app.post('/', ...` route will receive the
-  // result of our form
-  res.render('index', {
+  	// The form's action is '/' and its method is 'GET',
+  	// so the `app.post('/', ...` route will receive the
+  	// result of our form
+  	res.render('index', {
 		"page-title": "Home"
 	});
 });
@@ -43,24 +43,30 @@ app.post('/location-temperature', function(req, res){
   var userLocation = req.body.userLocation;
   
   getLocationData(userLocation, function(mylocdata) {
-	var latitude  = mylocdata.results[0].geometry.location.lat
-	var longitude = mylocdata.results[0].geometry.location.lng
-	var fullAddr  = mylocdata.results[0].formatted_address
-	//console.log(latitude);
-    //console.log(longitude);
-	
-	getWeatherData(latitude, longitude, function(weather) {
-	  var currentTemp    = weather.currently.temperature
-	  var currentSummary = weather.currently.summary 
-	  var html = 'Searched Location: '   + fullAddr + '<br>' +
-				 'Weather Summary: '     + currentSummary + '<br>' +
-				 'Current Temperature: ' + currentTemp + '<br>' +
-				 '<a href="/">Search again.</a>';
-	  res.send(html)
-	  //console.log(weather.currently.temperature);
-	}); 
-    
-  }); 
+  	var latitude  = mylocdata.results[0].geometry.location.lat;
+  	var longitude = mylocdata.results[0].geometry.location.lng;
+  	var fullAddr  = mylocdata.results[0].formatted_address;
+  	//console.log(latitude);
+      //console.log(longitude);
+  	
+  	getWeatherData(latitude, longitude, function(weather) {
+  	  var currentTemp    = weather.currently.temperature;
+  	  var currentSummary = weather.currently.summary;
+  	  // var html = 'Searched Location: '   + fullAddr + '<br>' +
+  		// 	 'Weather Summary: '     + currentSummary + '<br>' +
+  		// 	 'Current Temperature: ' + currentTemp + '<br>' +
+  		// 	 '<a href="/">Search again.</a>';
+  	  // res.send(html)
+
+  	  res.render('search-results', {
+        "search-term": userLocation,
+  			"page-title": "Search Results",
+        "weather-summary": currentSummary,
+        "current-temp": currentTemp
+  		});
+  	
+    });
+  });
   
 });
 

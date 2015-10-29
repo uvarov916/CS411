@@ -1,0 +1,19 @@
+<section class="search">
+	<div class="row">
+		<div class="columns small-12 large-10 small-centered">
+			<form action="/location-temperature" method="POST" name="search-form">
+				<input type="text" name="userLocation" placeholder="Enter location" value="{{search-term}}"/>
+				<input type="submit" value="Search">
+			</form>
+		</div>
+	</div>
+</section>
+
+<section class="search-results">
+	<div class="row">
+		<div class="columns small-12 large-10 small-centered">
+			<p><b>Summary:</b> {{weather-summary}}</p>
+			<p><b>Temperature:</b> {{current-temp}}</p>
+		</div>
+	</div>
+</section>

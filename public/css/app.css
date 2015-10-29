@@ -945,7 +945,46 @@ select {
 .text-right {
   text-align: right; }
 
+* {
+  font-family: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif; }
+
 body {
-  color: red; }
+  font-weight: 300; }
+
+b {
+  font-weight: 600; }
+
+section.search {
+  padding-top: 10rem; }
+  section.search input {
+    display: inline-block;
+    margin: 0;
+    padding: .5rem 0;
+    border: none;
+    font-size: 1.5rem; }
+    section.search input:focus {
+      outline: none; }
+  section.search input[type="text"] {
+    width: 60%;
+    padding-left: 1rem;
+    border-bottom: 1px solid #4A90E2;
+    font-size: 20px; }
+  section.search input[type="submit"] {
+    width: 14%;
+    background: none;
+    border: 1px solid #4A90E2;
+    border-radius: 2px;
+    color: #4A90E2;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: .2s ease-in-out;
+    cursor: pointer; }
+    section.search input[type="submit"]:hover {
+      background: #4A90E2;
+      color: #fff;
+      transition: .2s ease-in-out; }
+
+.search-results {
+  padding-top: 3rem; }
 
 /*# sourceMappingURL=app.css.map */
