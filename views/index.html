@@ -9,6 +9,38 @@
 	</div>
 </section>
 
+{{reg-status}}
+
+<section>
+	<h3> Login </h3>
+	<div class="row">
+		<div class="columns small-12 small-10 small-centered">
+			<form action="/location-temperature" method="POST" name="login-form">
+				<input type="text" name="userEmail" placeholder="Email"/> <br>
+				<input type="text" name="userPassword" placeholder="Password"/> <br>
+				<input type="submit" value="Login">
+			</form>
+		</div>
+	</div>
+</section>
+
+<br>
+<section>
+	<div class="row">
+		<div class="columns small-12 small-10 small-centered">
+			<form action="/register-new-user" method="POST" name="login-form">
+				<input type="submit" value="Register!">
+			</form>
+		</div>
+	</div>
+</section>
+
+<!--
+<section>
+		<a href="views/new-user.html">New User Registration</a>
+</section>
+-->
+
 <script type="text/javascript">
 	document.forms['search-form'].elements['userLocation'].focus();
 </script>
