@@ -38,6 +38,8 @@ module.exports = exports = function(app, db) {
 
     app.get('/my_locations', contentHandler.displayMyLocationsPage);
 
+    app.post('/weather_in_location', contentHandler.displayWeatherInSearchedLocation);
+
     app.get('*', function(req, res, next) {
         res.redirect("/");
     });

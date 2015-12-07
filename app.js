@@ -6,7 +6,8 @@ var express = require("express"),
     app = express(),
     cons = require("consolidate"),
     MongoClient = require("mongodb").MongoClient,
-    routes = require("./routes");
+    routes = require("./routes"),
+    request = require("request");
 
 MongoClient.connect('mongodb://admin:pwd@apollo.modulusmongo.net:27017/daxU7vob', function(err, db) {
     "use strict";
