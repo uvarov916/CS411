@@ -8,7 +8,7 @@ var express = require("express"),
     MongoClient = require("mongodb").MongoClient,
     routes = require("./routes");
 
-MongoClient.connect('mongodb://localhost:27017/rainorshine', function(err, db) {
+MongoClient.connect('mongodb://admin:pwd@apollo.modulusmongo.net:27017/daxU7vob', function(err, db) {
     "use strict";
     
     // Error connecting to the database

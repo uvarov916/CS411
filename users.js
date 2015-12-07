@@ -65,9 +65,6 @@ function UsersDAO(db) {
         users.findOne({ '_id' : email }, validateUserDoc);
     }
 
-
-
-
     // ------------------------------------------
     // !!! NOT IMPLEMENTED !!!
     // ------------------------------------------
@@ -80,6 +77,19 @@ function UsersDAO(db) {
     } 
     this.removeSavedLocation = function(locationId, callback) {
         
+    }
+    this.setCellPhone = function(email, cellPhone, callback) {
+        //console.log(email, cellPhone);
+        users.update( { "_id": email } , { $set : { "cell_phone": cellPhone }}, function(err, result) {
+            "use strict";
+            if (!err) {
+                console.log("Changed cell phone");
+                return callback(null, result[0]);
+            }
+
+            return callback(err, null);         
+        });
+
     }
 }
 

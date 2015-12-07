@@ -1,5 +1,9 @@
+var UsersDAO = require('../users').UsersDAO;
+
 function ContentHandler(db) {
 	"use strict";
+
+	var users = new UsersDAO(db);
 
 	this.displayHomePage = function(req, res, next) {
 		"use strict";
@@ -32,9 +36,24 @@ function ContentHandler(db) {
 			return res.render("my_locations");
 		}
 		else {
-			return res.redirect("?");
+			return res.redirect("/");
 		}
 	}
+
+	this.handleSaveSettings  = function(req, res, next) {
+		"use strict";
+
+		if (req.logged_in == true) {
+			var cell_phone = req.body.cell_phone;
+			//console.log(cell_phone);
+			users.setCellPhone(req.email, cell_phone, function() {
+				return res.render("settings");
+			});
+		}
+		else {
+			return res.redirect("/");
+		}
+	} 
 }
 
 module.exports = ContentHandler;

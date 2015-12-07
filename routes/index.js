@@ -32,7 +32,10 @@ module.exports = exports = function(app, db) {
     app.get('/signup', sessionHandler.displaySignupPage);
     app.post('/signup', sessionHandler.handleSignup);
 
+    // Settings form
     app.get('/settings', contentHandler.displaySettingsPage);
+    app.post('/settings', contentHandler.handleSaveSettings);
+
     app.get('/my_locations', contentHandler.displayMyLocationsPage);
 
     app.get('*', function(req, res, next) {
