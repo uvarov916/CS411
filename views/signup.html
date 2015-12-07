@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sign Up</title>
+	</head>
+	
+	<body>
+	
+		<h1>Sign Up</h1>
+		<p>Already have account? <a href="/login">Log In</a></p>
+
+		<form method="post">
+			
+			<label>Email</label>
+			<input type="email" name="email" value="">
+			<p class="error">{{ email_error }}</p>
+			<br>
+
+			<label>Password</label>
+			<input type="password" name="password" value="">
+			<p class="error">{{ password_error }}</p>
+			<br>
+
+			<label>Verify Password</label>
+			<input type="password" name="verify" value="">
+			<p class="error">{{ verify_error }}</p>
+			<br>
+
+			<input type="submit" value="Sign Up">
+		
+		</form>
+
+	</body>
+</html>
