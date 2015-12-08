@@ -35,19 +35,42 @@ function ContentHandler(db) {
 
 		if (req.logged_in == true) {
 
-			users.getSavedLocations(req.email, function(err, result) {
+			users.getSavedLocations(req.email, function(err, locations) {
 				
 				if (!err) {
-					console.log("Rendering the following locations: ");
-					console.log(result);
-					return res.render("my_locations", {
-						locations: result
+					// console.log("Rendering the following locations: ");
+					// console.log(locations);
+
+					var dataToRender = []
+
+					locations.forEach(function(listItem, idx) {
+						getWeatherData(locations[idx].latitude, locations[idx].longtitude, function(weatherData) {
+							var locationWeather = {
+								"name": locations[idx].name,
+								"latitude": locations[idx].latitude,
+								"longtitude": locations[idx].longtitude,
+								"summary": weatherData.currently.summary,
+								"temperature": Math.round(weatherData.currently.temperature),
+								"apparentTemperature": Math.round(weatherData.currently.apparentTemperature)
+							}
+							//console.log(locationWeather);
+							dataToRender.push(locationWeather);
+
+							if (dataToRender.length == locations.length) {
+								console.log("RENDERING PAGE");
+								console.log(dataToRender);
+
+								return res.render("my_locations", {
+									locations: dataToRender
+								});
+							}
+						});
 					});
 				}
-
-				console.log("Couldn't retrieve locations for the user.")
-				
-				return res.render("my_locations");
+				else {
+					console.log("Couldn't retrieve locations for the user.")
+					return res.render("my_locations");
+				}
 			})
 		}
 		else {

@@ -954,10 +954,13 @@ select {
   .inside-app a:hover {
     text-decoration: underline; }
 
-.inside-app body {
+.inside-app {
   font-family: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
   color: #222222;
   background-color: #F4F7F9; }
+
+.inside-app h1 {
+  font-weight: 400; }
 
 .inside-app header {
   padding: 1.5rem 0;
@@ -980,6 +983,65 @@ select {
         margin-left: 0; }
       .inside-app header .right-nav ul li:last-child {
         margin-right: 0; }
+
+.inside-app form.weather-search input[type="text"] {
+  width: 400px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #6FB127;
+  background: #F4F7F9; }
+
+.inside-app form.weather-search input[type="submit"] {
+  width: 80px;
+  height: 38px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  border-radius: 2px;
+  background: #6FB127;
+  color: white;
+  font-size: 14px;
+  font-weight: 300; }
+
+.inside-app .location-card {
+  background: white;
+  width: 400px;
+  padding-top: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0px 0px 4px #9B9B9B; }
+  .inside-app .location-card .temperature {
+    position: absolute;
+    text-align: right;
+    right: 2rem;
+    top: 0;
+    margin: 0;
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 60px; }
+  .inside-app .location-card .location-title {
+    margin: 0;
+    font-weight: 300;
+    font-size: 22px; }
+  .inside-app .location-card .details {
+    font-size: 16px;
+    font-weight: 300;
+    color: #8D8D8D;
+    margin: .25rem 0; }
+  .inside-app .location-card a {
+    color: #6FB127; }
+  .inside-app .location-card a.delete {
+    color: #D33D50; }
+  .inside-app .location-card .content {
+    position: relative;
+    padding: 0 2rem; }
+  .inside-app .location-card .card-footer {
+    background: #F2F2F2;
+    padding: .5rem 2rem;
+    margin-top: 1rem; }
+    .inside-app .location-card .card-footer a {
+      margin-right: 1rem; }
 
 #promo header {
   position: relative;

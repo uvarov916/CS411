@@ -15,6 +15,7 @@ $link-color: #0088EA;
 $text-color: #222222;
 
 $green-color: #6FB127;
+$red-color: #D33D50;
 
 $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 
@@ -32,10 +33,14 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 	    }
 	}
 
-	body {
+	& {
 	    font-family: $main-font-stack;
 	    color: $text-color;
 	    background-color: #F4F7F9;
+	}
+
+	h1 {
+		font-weight: 400;
 	}
 
 	header {
@@ -74,6 +79,86 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 	            }
 	        }
 	    }
+	}
+
+	form.weather-search {
+		input[type="text"] {
+			width: 400px;
+			height: 40px;
+			font-size: 16px;
+			border: none;
+			border-bottom: 1px solid $green-color;
+			background: #F4F7F9;
+		}
+
+		input[type="submit"] {
+			width: 80px;
+			height: 38px;
+			border: none;
+			padding: 0;
+			margin: 0;
+			text-transform: uppercase;
+			border-radius: 2px;
+			background: $green-color;
+			color: white;
+			font-size: 14px;
+			font-weight: 300;
+		}
+	}
+
+	.location-card {
+		background: white;
+		width: 400px;
+		padding-top: 1rem;
+		margin-bottom: 2rem;
+		box-shadow: 0px 0px 4px #9B9B9B;
+
+		.temperature {
+			position: absolute;
+			text-align: right;
+			right: 2rem;
+			top: 0;
+			margin: 0;
+			font-size: 60px;
+			font-weight: 300;
+			line-height: 60px;
+		}
+
+		.location-title {
+			margin: 0;
+			font-weight: 300;
+			font-size: 22px;
+		}
+
+		.details {
+			font-size: 16px;
+			font-weight: 300;
+			color: #8D8D8D;
+			margin: .25rem 0;
+		}
+
+		a {
+			color: $green-color;
+		}
+
+		a.delete {
+			color: $red-color;
+		}
+
+		.content {
+			position: relative;
+			padding: 0 2rem;
+		}
+
+		.card-footer {
+			background: #F2F2F2;
+			padding: .5rem 2rem;
+			margin-top: 1rem;
+
+			a {
+				margin-right: 1rem;
+			}
+		}
 	}
 }
 
@@ -227,7 +312,7 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 		}
 
 		p.error {
-			color: #D33D50;
+			color: $red-color;
 		}
 
 		.field {

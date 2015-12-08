@@ -8,10 +8,18 @@
 	<h1>My Locations</h1>
 
 	{% for loc in locations %}
-	  <p>
-	  	<a href="/weather_in_saved_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">{{ loc.name }}</a>
-	  	<a href="/delete_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">delete</a>
-	  </p>
+	  <div class="location-card">
+	  	<div class="content">
+		  	<h1 class="temperature">{{loc.temperature}}&deg;</h1>
+		  	<h2 class="location-title">{{loc.name}}</h2>
+		  	<p class="details">Summary: {{loc.summary}}</p>
+		  	<p class="details">Feels like: {{loc.apparentTemperature}}&deg;</p>
+	  	</div>
+	  	<div class="card-footer">
+	  		<a href="/weather_in_saved_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">details</a>
+	  		<a class="delete" href="/delete_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">delete</a>
+	  	</div>
+	  </div>
 	{% endfor %}
 
 {% endblock %}
