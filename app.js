@@ -27,12 +27,14 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     app.set("views", __dirname + "/views");
 
     // REMOVE FOR PRODUCTION
-    app.set('view cache', false);
-    swig.setDefaults({ cache: false });
+    // app.set('view cache', false);
+    // swig.setDefaults({ cache: false });
 
     // Middleware
     app.use(express.cookieParser()); // to get cookies
     app.use(express.bodyParser()); // to get POST variables
+
+    app.set('port', (process.env.PORT || 5000));
 
     app.use(express.static(path.join(__dirname, 'public')));
 
@@ -43,6 +45,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     // LAUNCH APP
     // ------------------------------------------
 
-    app.listen(8082);
-    console.log("Express listening on port 8082");
+    app.listen(app.get('port'), function() {
+      console.log('Node app is running on port', app.get('port'));
+    });
 });
