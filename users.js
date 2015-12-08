@@ -98,7 +98,13 @@ function UsersDAO(db) {
         users.findOne({"_id": email}, function(err, result) {
             if (!err) {
                 console.log("Location for the user retrieved.");
-                return callback(null, result["saved_locations"]);
+
+                if (typeof result["saved_locations"] === 'undefined') {
+                    return callback(null, []);
+                }
+                else {
+                    return callback(null, result["saved_locations"]);
+                }
             }
 
             return callback(err, null);

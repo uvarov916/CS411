@@ -22,4 +22,8 @@
 	  </div>
 	{% endfor %}
 
+	{% if !locations.length %}
+		<p>You don't have any locations saved.</p>
+	{% endif %}
+
 {% endblock %}

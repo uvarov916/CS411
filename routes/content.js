@@ -71,10 +71,16 @@ function ContentHandler(db) {
                             }
                         });
                     });
+
+                    if (locations.length == 0) {
+                        return res.render("my_locations");
+                    }
                 }
                 else {
                     console.log("Couldn't retrieve locations for the user.")
-                    return res.render("my_locations");
+                    return res.render("my_locations", {
+                        "locations": []
+                    });
                 }
             })
         }
