@@ -69,6 +69,17 @@ function UsersDAO(db) {
     // !!! NOT IMPLEMENTED !!!
     // ------------------------------------------
 
+    this.getPhoneNumber = function(email, callback) {
+        users.findOne({"_id": email}, function(err, result) {
+            if (!err) {
+                console.log("Location for the user retrieved.");
+                return callback(null, result["cell_phone"]);
+            }
+
+            return callback(err, null);
+        });
+    } 
+
     this.getSavedLocations = function(email, callback) {
         users.findOne({"_id": email}, function(err, result) {
             if (!err) {

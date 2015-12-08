@@ -23,7 +23,11 @@ function ContentHandler(db) {
 		"use strict";
 
 		if (req.logged_in == true) {
-			return res.render("settings");
+			users.getPhoneNumber(req.email, function(err, phoneNumber) {
+				return res.render("settings", {
+					"phoneNumber": phoneNumber
+				});
+			});
 		}
 		else {
 			return res.redirect("/");
@@ -85,7 +89,7 @@ function ContentHandler(db) {
 			var cell_phone = req.body.cell_phone;
 			//console.log(cell_phone);
 			users.setCellPhone(req.email, cell_phone, function() {
-				return res.render("settings");
+				return res.redirect("/settings");
 			});
 		}
 		else {

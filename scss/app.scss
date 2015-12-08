@@ -31,6 +31,48 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 
 .inside-app {
 
+	form.settings {
+		.field {
+			margin-top: 1.5rem;
+
+			label, input {
+				display: block;
+			}
+
+			label {
+				text-transform: uppercase;
+				font-size: 14px;
+				color: #666666;
+				margin-bottom: 6px;
+			}
+
+			input {
+				width: 100%;
+				height: 38px;
+				border: none;
+				border: 1px solid #E8E8E8;
+				border-radius: 4px;
+				padding-left: 1rem;
+				font-size: 16px;
+				font-weight: 300;
+			}
+		}
+
+		input[type="submit"] {
+			border: none;
+			background: #6FB127;
+			padding: .75rem 0;
+			width: 120px;
+			margin: 0;
+			border-radius: 2px;
+			color: white;
+			text-transform: uppercase;
+			margin-top: 1rem;
+			font-size: 12px;
+			cursor: pointer;
+		}
+	}
+
 	a {
 	    text-decoration: none;
 	    color: $link-color;
@@ -109,6 +151,7 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 			color: white;
 			font-size: 14px;
 			font-weight: 300;
+			cursor: pointer;
 		}
 	}
 
@@ -387,6 +430,7 @@ $main-font-stack: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif;
 			text-transform: uppercase;
 			margin-top: 1rem;
 			font-size: 14px;
+			cursor: pointer;
 		}
 	}
 }

@@ -7,11 +7,12 @@
 
 	<h1>Settings</h1>
 
-	<form method="post">
+	<form class="settings" method="post">
 		
-		<label>Phone Number</label>
-		<input type="text" name="cell_phone" value="">
-		<br>
+		<div class="field">
+			<label>Phone Number</label>
+			<input type="text" name="cell_phone" value="{{phoneNumber}}">
+		</div>
 
 		<input type="submit" value="Save Settings">
 	
