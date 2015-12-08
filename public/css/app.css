@@ -1055,4 +1055,60 @@ select {
   background: #F1F1F1;
   color: #000; }
 
+.authentication {
+  padding-top: 8rem; }
+  .authentication .back-home a {
+    color: #959595;
+    text-decoration: none; }
+  .authentication .card {
+    width: 400px;
+    padding-top: 2rem;
+    margin: 0 auto;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px #9B9B9B; }
+    .authentication .card .content {
+      padding: 0 2rem; }
+    .authentication .card h1, .authentication .card h3 {
+      text-align: center; }
+    .authentication .card h1 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-top: 0; }
+    .authentication .card h3 {
+      font-size: 16px;
+      font-weight: 300;
+      color: #959595; }
+      .authentication .card h3 a {
+        color: #4A90E2;
+        text-decoration: none; }
+    .authentication .card p.error {
+      color: #D33D50; }
+    .authentication .card .field {
+      margin-top: 1.5rem; }
+      .authentication .card .field label, .authentication .card .field input {
+        display: block; }
+      .authentication .card .field label {
+        text-transform: uppercase;
+        font-size: 14px;
+        color: #666666;
+        margin-bottom: 6px; }
+      .authentication .card .field input {
+        width: 100%;
+        height: 38px;
+        border: none;
+        border: 1px solid #E8E8E8;
+        border-radius: 4px;
+        padding-left: 1rem; }
+    .authentication .card input[type="submit"] {
+      border: none;
+      background: #6FB127;
+      padding: 1rem 0;
+      width: 100%;
+      margin: 0;
+      border-radius: 0 0 4px 4px;
+      color: white;
+      text-transform: uppercase;
+      margin-top: 1rem;
+      font-size: 14px; }
+
 /*# sourceMappingURL=app.css.map */

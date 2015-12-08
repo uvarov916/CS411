@@ -1,34 +1,51 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Sign Up</title>
+		<meta charset="utf-8">
+		<title>Log In</title>
+		<link rel="stylesheet" type="text/css" href="/css/app.css">
 	</head>
 	
-	<body>
-	
-		<h1>Sign Up</h1>
-		<p>Already have account? <a href="/login">Log In</a></p>
+	<body class="authentication">
 
-		<form method="post">
+		<div class="card">
+
+			<div class="content">
+				<h1>Sign Up</h1>
+				<h3>Have account already? <a href="/login">Log In</a></h3>
+			</div>
+
+			<form method="post">
+				
+				<div class="content">
+					<div class="field">
+						<label>Email</label>
+						<input type="email" name="email" value="">
+						<p class="error">{{ email_error }}</p>
+					</div>
+
+					<div class="field">
+						<label>Password</label>
+						<input type="password" name="password" value="">
+						<p class="error">{{ password_error }}</p>
+					</div>
+
+					<div class="field">
+						<label>Verify Password</label>
+						<input type="password" name="verify" value="">
+						<p class="error">{{ verify_error }}</p>
+					</div>
+				</div>
+
+				<input type="submit" value="Sign Up">
 			
-			<label>Email</label>
-			<input type="email" name="email" value="">
-			<p class="error">{{ email_error }}</p>
-			<br>
+			</form>
+		</div>
 
-			<label>Password</label>
-			<input type="password" name="password" value="">
-			<p class="error">{{ password_error }}</p>
-			<br>
+		<div class="back-home text-center">
+			<p><a href="/">home page</a></p>
+		</div>
 
-			<label>Verify Password</label>
-			<input type="password" name="verify" value="">
-			<p class="error">{{ verify_error }}</p>
-			<br>
-
-			<input type="submit" value="Sign Up">
-		
-		</form>
 
 	</body>
 </html>
