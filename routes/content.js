@@ -40,7 +40,9 @@ function ContentHandler(db) {
 				if (!err) {
 					console.log("Rendering the following locations: ");
 					console.log(result);
-					return res.render("my_locations");
+					return res.render("my_locations", {
+						locations: result
+					});
 				}
 
 				console.log("Couldn't retrieve locations for the user.")
@@ -71,26 +73,44 @@ function ContentHandler(db) {
 	this.displayWeatherInSearchedLocation = function(req, res, next) {
 		"use strict";
 
-		var userLocation = req.body.location_search_term;
+		var userLocation = req.query.location_search_term;
 		console.log(userLocation);
 
 		getLocationData(userLocation, function(mylocdata) {
-			var latitude  = mylocdata.results[0].geometry.location.lat;
-			var longitude = mylocdata.results[0].geometry.location.lng;
-		  	var fullAddr  = mylocdata.results[0].formatted_address;
-		  	console.log(fullAddr);
-		  	console.log(latitude);
-		    console.log(longitude);
+			var loc = {}
+			loc["name"] = mylocdata.results[0].formatted_address;
+			loc["longtitude"] = mylocdata.results[0].geometry.location.lng;
+			loc["latitude"] = mylocdata.results[0].geometry.location.lat;	    
 		  	
-		  	getWeatherData(latitude, longitude, function(weather) {
+		  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
 		  		var currentTemp    = weather.currently.temperature;
 		  		return res.render("weather_in_location", {
-					temperature : currentTemp
+					temperature : currentTemp,
+					loc: loc
 				});
 		  	
 		    });
 		});
 	} 
+
+	this.displayWeatherInSavedLocation = function(req, res, next) {
+		"use strict";
+
+		var loc = {}
+		loc["name"] = req.query.location_name;
+		loc["longtitude"] = req.query.location_longtitude;
+		loc["latitude"] = req.query.location_latitude;
+
+  	
+	  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
+	  		var currentTemp = weather.currently.temperature;
+	  		return res.render("weather_in_saved_location", {
+				temperature : currentTemp,
+				loc: loc
+			});
+	  	
+	    });
+	}
 
 	this.saveLocation = function(req, res, next) {
 		"use strict";

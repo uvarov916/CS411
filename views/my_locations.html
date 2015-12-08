@@ -13,5 +13,12 @@
 		<a href="/settings">Settings</a>
 		<a href="/logout">Logout</a>
 
+		{% for loc in locations %}
+		  <p>
+		  	<a href="/weather_in_saved_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">{{ loc.name }}</a>
+		  	<a href="/delete_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">delete</a>
+		  </p>
+		{% endfor %}
+
 	</body>
 </html>

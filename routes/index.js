@@ -38,7 +38,8 @@ module.exports = exports = function(app, db) {
 
     app.get('/my_locations', contentHandler.displayMyLocationsPage);
 
-    app.post('/weather_in_location', contentHandler.displayWeatherInSearchedLocation);
+    app.get('/weather_in_location', contentHandler.displayWeatherInSearchedLocation);
+    app.get('/weather_in_saved_location', contentHandler.displayWeatherInSavedLocation);
 
     app.get('/save_location', contentHandler.saveLocation);
     app.get('/delete_location', contentHandler.deleteLocation);
