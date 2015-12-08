@@ -114,10 +114,36 @@ function ContentHandler(db) {
 			loc["latitude"] = mylocdata.results[0].geometry.location.lat;	    
 		  	
 		  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
-		  		var currentTemp    = weather.currently.temperature;
+		  		var currentWeather = {
+		  			"summary": weather.currently.summary,
+		  			"temperature": Math.round(weather.currently.temperature),
+		  			"apparentTemperature": Math.round(weather.currently.apparentTemperature),
+		  			"precipProbability": weather.currently.precipProbability,
+		  			"windSpeed": weather.currently.windSpeed,
+		  			"iconClass": getIconClass(weather.currently.icon)
+		  		}
+
+		  		var weatherThisWeek = [];
+		  		var dailyData = weather.daily.data;
+
+		  		for (var key in dailyData) {
+			    	var temp = {}
+			        temp.iconClass = getIconClass(dailyData[key].icon);
+			        temp.summary = dailyData[key].summary;
+
+			        var d = new Date(dailyData[key].time * 1000);
+			        temp.date = getDayString(d.getDay());
+
+			        temp.minTemp = dailyData[key].temperatureMin;
+			        temp.maxTemp = dailyData[key].temperatureMax;
+
+			        weatherThisWeek.push(temp);
+			    }
+
 		  		return res.render("weather_in_location", {
-					temperature : currentTemp,
-					loc: loc
+					"location": loc,
+					"currentWeather": currentWeather,
+					"weatherThisWeek": weatherThisWeek
 				});
 		  	
 		    });

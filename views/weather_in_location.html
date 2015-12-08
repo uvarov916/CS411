@@ -8,11 +8,37 @@
 	<h1>Weather In Location</h1>
 
 	<p>
-		<a href="/save_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">Save This Location</a>
+		<a href="/save_location?location_name={{location.name}}&location_longtitude={{location.longtitude}}&location_latitude={{location.latitude}}">Save This Location</a>
 	</p>
 
-	<p>
-		Temperature: {{temperature}}
-	</p>
+	<div class="location-card no-footer">
+	  	<div class="content">
+		  	<h1 class="temperature">{{currentWeather.temperature}}&deg;</h1>
+		  	<h2 class="location-title">{{location.name}}</h2>
+		  	<p class="details">Summary: {{currentWeather.summary}}</p>
+		  	<p class="details">Feels Like: {{currentWeather.apparentTemperature}}&deg;</p>
+		  	<p class="details">Chance Of Rain: {{currentWeather.precipProbability}}</p>
+		  	<p class="details">Wind Speed: {{currentWeather.windSpeed}}</p>
+		  	
+		  	<div class="weather-icon {{currentWeather.iconClass}}"></div>
+	  	</div>
+	</div>
+
+	<div class="location-card no-footer">
+		<div class="content">
+		  	<h2 class="location-title">Weather This Week</h2>
+
+		  	{% for day in weatherThisWeek %}
+				<div class="weather-weekly-day">
+					<h3>{{day.date}}</h3>
+					<p class="details">{{day.summary}}</p>
+					<p class="details">Min Temperature: {{day.minTemp}}&deg;</p>
+					<p class="details">Max Temperature: {{day.maxTemp}}&deg;</p>
+
+					<div class="weather-icon {{day.iconClass}}"></div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 
 {% endblock %}
