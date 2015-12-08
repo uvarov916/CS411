@@ -23,10 +23,11 @@
     "gulp-sourcemaps": "^1.5.2"
   },
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "",
   "author": "Hwa-seung Erstling, Duomin Ji, Jarrod Lewis and Ivan Uvarov",
-  "license": "",
+  "license": "MIT",
   "private": true
 }
