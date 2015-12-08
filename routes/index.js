@@ -12,8 +12,7 @@ module.exports = exports = function(app, db) {
     // ------------------------------------------
 
     app.use(sessionHandler.isLoggedInMiddleware);
-
-
+    
 
     // ------------------------------------------
     // ROUTES
@@ -21,29 +20,33 @@ module.exports = exports = function(app, db) {
 
     app.get("/", contentHandler.displayHomePage);
 
-    // Login form
+    // Login Form
     app.get('/login', sessionHandler.displayLoginPage);
     app.post('/login', sessionHandler.handleLoginRequest);
 
-    // Logout page
+    // Logout Page
     app.get('/logout', sessionHandler.displayLogoutPage);
 
-    // Signup form
+    // Signup Form
     app.get('/signup', sessionHandler.displaySignupPage);
     app.post('/signup', sessionHandler.handleSignup);
 
-    // Settings form
+    // Settings Form
     app.get('/settings', contentHandler.displaySettingsPage);
     app.post('/settings', contentHandler.handleSaveSettings);
 
+    // My Location
     app.get('/my_locations', contentHandler.displayMyLocationsPage);
 
+    // Weather in Location
     app.get('/weather_in_location', contentHandler.displayWeatherInSearchedLocation);
     app.get('/weather_in_saved_location', contentHandler.displayWeatherInSavedLocation);
 
+    // Saving/Deleting Locations
     app.get('/save_location', contentHandler.saveLocation);
     app.get('/delete_location', contentHandler.deleteLocation);
 
+    // For all other pages
     app.get('*', function(req, res, next) {
         res.redirect("/");
     });

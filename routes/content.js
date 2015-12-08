@@ -1,343 +1,358 @@
 var UsersDAO = require('../users').UsersDAO;
 var request = require("request");
-	
+    
 function ContentHandler(db) {
-	"use strict";
+    "use strict";
 
-	var users = new UsersDAO(db);
+    var users = new UsersDAO(db);
 
-	this.displayHomePage = function(req, res, next) {
-		"use strict";
 
-		if (req.logged_in == true) {
-			return res.render("home", {
-				email: req.email
-			});
-		}
-		else {
-			return res.render("promo");
-		}
-	}
+    this.displayHomePage = function(req, res, next) {
+        "use strict";
 
-	this.displaySettingsPage = function(req, res, next) {
-		"use strict";
+        if (req.logged_in == true) {
+            return res.render("home");
+        }
+        else {
+            return res.render("promo");
+        }
+    }
 
-		if (req.logged_in == true) {
-			users.getPhoneNumber(req.email, function(err, phoneNumber) {
-				return res.render("settings", {
-					"phoneNumber": phoneNumber
-				});
-			});
-		}
-		else {
-			return res.redirect("/");
-		}
-	}
 
-	this.displayMyLocationsPage = function(req, res, next) {
-		"use strict";
+    this.displaySettingsPage = function(req, res, next) {
+        "use strict";
 
-		if (req.logged_in == true) {
+        if (req.logged_in == true) {
+            users.getPhoneNumber(req.email, function(err, phoneNumber) {
+                return res.render("settings", {
+                    "phoneNumber": phoneNumber
+                });
+            });
+        }
+        else {
+            return res.redirect("/");
+        }
+    }
 
-			users.getSavedLocations(req.email, function(err, locations) {
-				
-				if (!err) {
-					// console.log("Rendering the following locations: ");
-					// console.log(locations);
 
-					var dataToRender = []
+    this.displayMyLocationsPage = function(req, res, next) {
+        "use strict";
 
-					locations.forEach(function(listItem, idx) {
-						getWeatherData(locations[idx].latitude, locations[idx].longtitude, function(weatherData) {
-							var locationWeather = {
-								"name": locations[idx].name,
-								"latitude": locations[idx].latitude,
-								"longtitude": locations[idx].longtitude,
-								"summary": weatherData.currently.summary,
-								"temperature": Math.round(weatherData.currently.temperature),
-								"apparentTemperature": Math.round(weatherData.currently.apparentTemperature)
-							}
-							//console.log(locationWeather);
-							dataToRender.push(locationWeather);
+        if (req.logged_in == true) {
 
-							if (dataToRender.length == locations.length) {
-								console.log("RENDERING PAGE");
-								console.log(dataToRender);
+            users.getSavedLocations(req.email, function(err, locations) {
+                
+                if (!err) {
+                    // console.log("Rendering the following locations: ");
+                    // console.log(locations);
 
-								return res.render("my_locations", {
-									locations: dataToRender
-								});
-							}
-						});
-					});
-				}
-				else {
-					console.log("Couldn't retrieve locations for the user.")
-					return res.render("my_locations");
-				}
-			})
-		}
-		else {
-			return res.redirect("/");
-		}
-	}
+                    var dataToRender = []
 
-	this.handleSaveSettings  = function(req, res, next) {
-		"use strict";
+                    locations.forEach(function(listItem, idx) {
+                        getWeatherData(locations[idx].latitude, locations[idx].longtitude, function(weatherData) {
+                            var locationWeather = {
+                                "name": locations[idx].name,
+                                "latitude": locations[idx].latitude,
+                                "longtitude": locations[idx].longtitude,
+                                "summary": weatherData.currently.summary,
+                                "temperature": Math.round(weatherData.currently.temperature),
+                                "apparentTemperature": Math.round(weatherData.currently.apparentTemperature)
+                            }
+                            //console.log(locationWeather);
+                            dataToRender.push(locationWeather);
 
-		if (req.logged_in == true) {
-			var cell_phone = req.body.cell_phone;
-			//console.log(cell_phone);
-			users.setCellPhone(req.email, cell_phone, function() {
-				return res.redirect("/settings");
-			});
-		}
-		else {
-			return res.redirect("/");
-		}
-	}
+                            if (dataToRender.length == locations.length) {
+                                console.log("RENDERING PAGE");
+                                console.log(dataToRender);
 
-	this.displayWeatherInSearchedLocation = function(req, res, next) {
-		"use strict";
+                                return res.render("my_locations", {
+                                    locations: dataToRender
+                                });
+                            }
+                        });
+                    });
+                }
+                else {
+                    console.log("Couldn't retrieve locations for the user.")
+                    return res.render("my_locations");
+                }
+            })
+        }
+        else {
+            return res.redirect("/");
+        }
+    }
 
-		// Prevents app from crashing upon invalid search location, reloads page
-		// TO DO: return an error message
-		process.on('uncaughtException', function (err) {
-		  console.error(err);
-		  console.log("Bad search...");
-		  return res.redirect("/");
-		});
 
-		var userLocation = req.query.location_search_term;
-		console.log(userLocation);
+    this.handleSaveSettings  = function(req, res, next) {
+        "use strict";
 
-		getLocationData(userLocation, function(mylocdata) {
-			var loc = {}
-			loc["name"] = mylocdata.results[0].formatted_address;
-			loc["longtitude"] = mylocdata.results[0].geometry.location.lng;
-			loc["latitude"] = mylocdata.results[0].geometry.location.lat;	    
-		  	
-		  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
-		  		var currentWeather = {
-		  			"summary": weather.currently.summary,
-		  			"temperature": Math.round(weather.currently.temperature),
-		  			"apparentTemperature": Math.round(weather.currently.apparentTemperature),
-		  			"precipProbability": weather.currently.precipProbability,
-		  			"windSpeed": weather.currently.windSpeed,
-		  			"iconClass": getIconClass(weather.currently.icon)
-		  		}
+        if (req.logged_in == true) {
+            var cell_phone = req.body.cell_phone;
+            //console.log(cell_phone);
+            users.setCellPhone(req.email, cell_phone, function() {
+                return res.redirect("/settings");
+            });
+        }
+        else {
+            return res.redirect("/");
+        }
+    }
 
-		  		var weatherThisWeek = [];
-		  		var dailyData = weather.daily.data;
 
-		  		for (var key in dailyData) {
-			    	var temp = {}
-			        temp.iconClass = getIconClass(dailyData[key].icon);
-			        temp.summary = dailyData[key].summary;
+    this.displayWeatherInSearchedLocation = function(req, res, next) {
+        "use strict";
 
-			        var d = new Date(dailyData[key].time * 1000);
-			        temp.date = getDayString(d.getDay());
+        // Prevents app from crashing upon invalid search location, reloads page
+        // TO DO: return an error message
+        process.on('uncaughtException', function (err) {
+          console.error(err);
+          console.log("Bad search...");
+          return res.redirect("/");
+        });
 
-			        temp.minTemp = dailyData[key].temperatureMin;
-			        temp.maxTemp = dailyData[key].temperatureMax;
+        var userLocation = req.query.location_search_term;
+        console.log(userLocation);
 
-			        weatherThisWeek.push(temp);
-			    }
+        getLocationData(userLocation, function(mylocdata) {
+            var loc = {}
+            loc["name"] = mylocdata.results[0].formatted_address;
+            loc["longtitude"] = mylocdata.results[0].geometry.location.lng;
+            loc["latitude"] = mylocdata.results[0].geometry.location.lat;       
+            
+            getWeatherData(loc.latitude, loc.longtitude, function(weather) {
+                var currentWeather = {
+                    "summary": weather.currently.summary,
+                    "temperature": Math.round(weather.currently.temperature),
+                    "apparentTemperature": Math.round(weather.currently.apparentTemperature),
+                    "precipProbability": weather.currently.precipProbability,
+                    "windSpeed": weather.currently.windSpeed,
+                    "iconClass": getIconClass(weather.currently.icon)
+                }
 
-		  		return res.render("weather_in_location", {
-					"location": loc,
-					"currentWeather": currentWeather,
-					"weatherThisWeek": weatherThisWeek
-				});
-		  	
-		    });
-		});
-	} 
+                var weatherThisWeek = [];
+                var dailyData = weather.daily.data;
 
-	this.displayWeatherInSavedLocation = function(req, res, next) {
-		"use strict";
+                for (var key in dailyData) {
+                    var temp = {}
+                    temp.iconClass = getIconClass(dailyData[key].icon);
+                    temp.summary = dailyData[key].summary;
 
-		var loc = {}
-		loc["name"] = req.query.location_name;
-		loc["longtitude"] = req.query.location_longtitude;
-		loc["latitude"] = req.query.location_latitude;
+                    var d = new Date(dailyData[key].time * 1000);
+                    temp.date = getDayString(d.getDay());
 
-  	
-	  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
-	  		var currentWeather = {
-	  			"summary": weather.currently.summary,
-	  			"temperature": Math.round(weather.currently.temperature),
-	  			"apparentTemperature": Math.round(weather.currently.apparentTemperature),
-	  			"precipProbability": weather.currently.precipProbability,
-	  			"windSpeed": weather.currently.windSpeed,
-	  			"iconClass": getIconClass(weather.currently.icon)
-	  		}
+                    temp.minTemp = dailyData[key].temperatureMin;
+                    temp.maxTemp = dailyData[key].temperatureMax;
 
-	  		var weatherThisWeek = [];
-	  		var dailyData = weather.daily.data;
+                    weatherThisWeek.push(temp);
+                }
 
-	  		for (var key in dailyData) {
-		    	var temp = {}
-		        temp.iconClass = getIconClass(dailyData[key].icon);
-		        temp.summary = dailyData[key].summary;
+                return res.render("weather_in_location", {
+                    "location": loc,
+                    "currentWeather": currentWeather,
+                    "weatherThisWeek": weatherThisWeek
+                });
+            
+            });
+        });
+    }
 
-		        var d = new Date(dailyData[key].time * 1000);
-		        temp.date = getDayString(d.getDay());
 
-		        temp.minTemp = dailyData[key].temperatureMin;
-		        temp.maxTemp = dailyData[key].temperatureMax;
+    this.displayWeatherInSavedLocation = function(req, res, next) {
+        "use strict";
 
-		        weatherThisWeek.push(temp);
-		    }
+        var loc = {}
+        loc["name"] = req.query.location_name;
+        loc["longtitude"] = req.query.location_longtitude;
+        loc["latitude"] = req.query.location_latitude;
 
-	  		return res.render("weather_in_saved_location", {
-				"location": loc,
-				"currentWeather": currentWeather,
-				"weatherThisWeek": weatherThisWeek
-			});
-	  	
-	    });
-	}
+    
+        getWeatherData(loc.latitude, loc.longtitude, function(weather) {
+            var currentWeather = {
+                "summary": weather.currently.summary,
+                "temperature": Math.round(weather.currently.temperature),
+                "apparentTemperature": Math.round(weather.currently.apparentTemperature),
+                "precipProbability": weather.currently.precipProbability,
+                "windSpeed": weather.currently.windSpeed,
+                "iconClass": getIconClass(weather.currently.icon)
+            }
 
-	this.saveLocation = function(req, res, next) {
-		"use strict";
+            var weatherThisWeek = [];
+            var dailyData = weather.daily.data;
 
-		// DOESN'T CHECK IF INSERT A DUPLICATE
+            for (var key in dailyData) {
+                var temp = {}
+                temp.iconClass = getIconClass(dailyData[key].icon);
+                temp.summary = dailyData[key].summary;
 
-		if (req.logged_in == true) {
+                var d = new Date(dailyData[key].time * 1000);
+                temp.date = getDayString(d.getDay());
 
-			var location_name = req.query.location_name;
-			var location_longtitude = req.query.location_longtitude;
-			var location_latitude = req.query.location_latitude;
+                temp.minTemp = dailyData[key].temperatureMin;
+                temp.maxTemp = dailyData[key].temperatureMax;
 
-			var loc = {
-				"name": location_name,
-				"longtitude": location_longtitude,
-				"latitude": location_latitude
-			}
-			users.addNewLocation(req.email, loc, function(err, result) {
-				return res.redirect("/my_locations");
-			});
+                weatherThisWeek.push(temp);
+            }
 
-		}
-		else {
-			return res.redirect("/");
-		}
-	}
+            return res.render("weather_in_saved_location", {
+                "location": loc,
+                "currentWeather": currentWeather,
+                "weatherThisWeek": weatherThisWeek
+            });
+        
+        });
+    }
 
-	this.deleteLocation = function(req, res, next) {
-		"use strict";
 
-		if (req.logged_in == true) {
+    this.saveLocation = function(req, res, next) {
+        "use strict";
 
-			var location_name = req.query.location_name;
-			var location_longtitude = req.query.location_longtitude;
-			var location_latitude = req.query.location_latitude;
+        // DOESN'T CHECK IF INSERT A DUPLICATE
 
-			var loc = {
-				"name": location_name,
-				"longtitude": location_longtitude,
-				"latitude": location_latitude
-			}
+        if (req.logged_in == true) {
 
-			users.deleteSavedLocation(req.email, loc, function(err, result) {
-				return res.redirect("/my_locations");
-			});
+            var location_name = req.query.location_name;
+            var location_longtitude = req.query.location_longtitude;
+            var location_latitude = req.query.location_latitude;
 
-		}
-		else {
-			return res.redirect("/");
-		}
-	}
+            var loc = {
+                "name": location_name,
+                "longtitude": location_longtitude,
+                "latitude": location_latitude
+            }
+            users.addNewLocation(req.email, loc, function(err, result) {
+                return res.redirect("/my_locations");
+            });
+
+        }
+        // Redirect to home page if not logged in
+        else {
+            return res.redirect("/");
+        }
+    }
+
+
+    this.deleteLocation = function(req, res, next) {
+        "use strict";
+
+        if (req.logged_in == true) {
+            var location_name = req.query.location_name;
+            var location_longtitude = req.query.location_longtitude;
+            var location_latitude = req.query.location_latitude;
+
+            var loc = {
+                "name": location_name,
+                "longtitude": location_longtitude,
+                "latitude": location_latitude
+            }
+
+            users.deleteSavedLocation(req.email, loc, function(err, result) {
+                return res.redirect("/my_locations");
+            });
+
+        }
+        // Redirect to home page if not logged in
+        else {
+            return res.redirect("/");
+        }
+    }
 }
+
+
+
+// ------------------------------------------
+// HELPER FUNCTIONS
+// ------------------------------------------
+
 
 // NEED TO CHECK FOR INCORRECT LOCATION INPUT
 function getLocationData(inputAddress, callback) {
-	var geocodingApiKey = "AIzaSyAEokMIw4n0LyczRhF3Qrmo-_HZCnHFdKM";
-	var baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-	var geocodingUrl = baseUrl + inputAddress + "&key=" + geocodingApiKey;
-	//console.log(geocodingUrl)
-	
-	request(geocodingUrl, function(error, response, body) {
-	  if (!error && response.statusCode == 200) {
-
-	    if (callback) callback(JSON.parse(body));
-	  }
-	});
+    var geocodingApiKey = "AIzaSyAEokMIw4n0LyczRhF3Qrmo-_HZCnHFdKM";
+    var baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    var geocodingUrl = baseUrl + inputAddress + "&key=" + geocodingApiKey;
+    
+    request(geocodingUrl, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            if (callback) callback(JSON.parse(body));
+        }
+    });
 }
 
+
+// Returns weather object from Forecast.io for given latitude and longtitude
 function getWeatherData(latitude, longtitude, callback) {
-	var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
-	var baseUrl = "https://api.forecast.io/forecast/";
-	var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
-	//console.log(forecastUrl)
-	
-	request(forecastUrl, function(error, response, body) {
-	  if (!error && response.statusCode == 200) {
-
-	    if (callback) callback(JSON.parse(body));
-	  }
-	});
+    var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
+    var baseUrl = "https://api.forecast.io/forecast/";
+    var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
+    
+    request(forecastUrl, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            if (callback) callback(JSON.parse(body));
+        }
+    });
 }
+
 
 function getDayString(dayNumber) {
   
-  var dayString = "Undefined";
+    var dayString = "Undefined";
 
-  switch(dayNumber) {
-    case 0:
-        var dayString = "Sunday";
-        break;
-    case 1:
-        var dayString = "Monday";
-        break;
-    case 2:
-        var dayString = "Tuesday";
-        break;
-    case 3:
-        var dayString = "Wednesday";
-        break;
-    case 4:
-        var dayString = "Thursday";
-        break;
-    case 5:
-        var dayString = "Friday";
-        break;
-    case 6:
-        var dayString = "Saturday";
-        break;
-    default:
-        var dayString = "Number is out of range";
-  }
+    switch(dayNumber) {
+        case 0:
+            var dayString = "Sunday";
+            break;
+        case 1:
+            var dayString = "Monday";
+            break;
+        case 2:
+            var dayString = "Tuesday";
+            break;
+        case 3:
+            var dayString = "Wednesday";
+            break;
+        case 4:
+            var dayString = "Thursday";
+            break;
+        case 5:
+            var dayString = "Friday";
+            break;
+        case 6:
+            var dayString = "Saturday";
+            break;
+        default:
+            var dayString = "Number is out of range";
+    }
 
   return dayString;
 }
 
-function getIconClass(currentIcon) {
-  var iconClassToRender = "";
-  if (currentIcon == "clear-day") {
-    iconClassToRender = "icon-sun";
-  } else if (currentIcon == "clear-night") {
-    iconClassToRender = "icon-moon";
-  } else if (currentIcon == "rain") {
-    iconClassToRender = "icon-rainy";
-  } else if (currentIcon == "snow") {
-    iconClassToRender = "icon-snowy";
-  } else if (currentIcon == "sleet") {
-    iconClassToRender = "icon-sleet";
-  } else if (currentIcon == "wind") {
-    iconClassToRender = "icon-windy";
-  } else if (currentIcon == "fog") {
-    iconClassToRender = "icon-mist";
-  } else if (currentIcon == "cloudy") {
-    iconClassToRender = "icon-cloud";
-  } else if (currentIcon == "partly-cloudy-day") {
-    iconClassToRender = "icon-cloud";
-  } else if (currentIcon == "partly-cloudy-night") {
-    iconClassToRender = "icon-cloud";
-  }
 
-  return iconClassToRender;
+// Returns proper icon class based on icon name received from Forecast.io
+function getIconClass(currentIcon) {
+    var iconClassToRender = "";
+    if (currentIcon == "clear-day") {
+        iconClassToRender = "icon-sun";
+    } else if (currentIcon == "clear-night") {
+        iconClassToRender = "icon-moon";
+    } else if (currentIcon == "rain") {
+        iconClassToRender = "icon-rainy";
+    } else if (currentIcon == "snow") {
+        iconClassToRender = "icon-snowy";
+    } else if (currentIcon == "sleet") {
+        iconClassToRender = "icon-sleet";
+    } else if (currentIcon == "wind") {
+        iconClassToRender = "icon-windy";
+    } else if (currentIcon == "fog") {
+        iconClassToRender = "icon-mist";
+    } else if (currentIcon == "cloudy") {
+        iconClassToRender = "icon-cloud";
+    } else if (currentIcon == "partly-cloudy-day") {
+        iconClassToRender = "icon-cloud";
+    } else if (currentIcon == "partly-cloudy-night") {
+        iconClassToRender = "icon-cloud";
+    }
+
+    return iconClassToRender;
 }
 
 module.exports = ContentHandler;

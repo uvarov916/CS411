@@ -1,3 +1,16 @@
+/* *******************************************************************
+
+    This files containts all functions that interact with sessions
+    collection in the database.
+
+    Functions:
+        1. startSession(eamil, callback)
+        2. endSession(session_id, callback)
+        3. getEmail(session_if, callback)
+
+/* *******************************************************************/
+
+
 var crypto = require("crypto");
 
 function SessionsDAO(db) {

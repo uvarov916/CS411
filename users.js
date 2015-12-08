@@ -1,3 +1,21 @@
+/* *******************************************************************
+
+    This files containts all functions that interact with users
+    collection in the database.
+
+    Functions:
+        1. addUser(email, password, callback)
+        2. validateLogin(email, password)
+        3. getPhoneNumber(email, callback)
+        4. getSavedLocations(email, callback)
+        5. addNewLocation(email, location, callback)
+        6. deleteSavedLocation(email, loc, callback)
+        7. setCellPhone(email, cellPhone, callback)
+
+/* *******************************************************************/
+
+
+
 var bcrypt = require('bcrypt-nodejs');
 
 function UsersDAO(db) {
@@ -9,8 +27,8 @@ function UsersDAO(db) {
         console.log('Warning: UsersDAO constructor called without "new" operator');
         return new UsersDAO(db);
     }
-
     var users = db.collection("users");
+
 
     this.addUser = function(email, password, callback) {
         "use strict";
@@ -65,10 +83,6 @@ function UsersDAO(db) {
         users.findOne({ '_id' : email }, validateUserDoc);
     }
 
-    // ------------------------------------------
-    // !!! NOT IMPLEMENTED !!!
-    // ------------------------------------------
-
     this.getPhoneNumber = function(email, callback) {
         users.findOne({"_id": email}, function(err, result) {
             if (!err) {
@@ -91,9 +105,9 @@ function UsersDAO(db) {
         });
     } 
 
-    this.addNewLocation = function(email, loc, callback) {
+    this.addNewLocation = function(email, location, callback) {
         
-        //  loc should be a dictionary of the following format:
+        //  location should be a dictionary of the following format:
         //  {
         //      "name": "Boston",
         //      "longtitude": 123,
@@ -101,7 +115,7 @@ function UsersDAO(db) {
         //  }
 
 
-        users.update({"_id": email}, {$addToSet: {"saved_locations": loc}}, function(err, result) {
+        users.update({"_id": email}, {$addToSet: {"saved_locations": location}}, function(err, result) {
             if (!err) {
                 console.log("Added new location to the user.");
                 return callback(null, result[0]);
@@ -122,7 +136,6 @@ function UsersDAO(db) {
             return callback(err, null);
         });
     } 
-
 
     this.setCellPhone = function(email, cellPhone, callback) {
         //console.log(email, cellPhone);
@@ -153,8 +166,6 @@ function UsersDAO(db) {
             console.log(responseData.body);
             }
         });
-
-
     }
 }
 

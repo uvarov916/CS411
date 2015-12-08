@@ -4,7 +4,6 @@
 
 var express = require("express"),
     app = express(),
-    cons = require("consolidate"),
     MongoClient = require("mongodb").MongoClient,
     routes = require("./routes"),
     request = require("request"),
@@ -26,7 +25,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     app.set("view engine", "html");
     app.set("views", __dirname + "/views");
 
-    // REMOVE FOR PRODUCTION
+    // Turn off caching (for development only)
     // app.set('view cache', false);
     // swig.setDefaults({ cache: false });
 
@@ -34,6 +33,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     app.use(express.cookieParser()); // to get cookies
     app.use(express.bodyParser()); // to get POST variables
 
+    // Use default Heroku port
     app.set('port', (process.env.PORT || 5000));
 
     app.use(express.static(path.join(__dirname, 'public')));
