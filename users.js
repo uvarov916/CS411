@@ -125,6 +125,25 @@ function UsersDAO(db) {
             return callback(err, null);         
         });
 
+        // Send confirmation text to user
+        // Twilio
+        var accountSid = 'AC741c25b02127a7f89bfd89398cbb7b39';
+        var authToken = 'ec0331d000609e234d0f045d8d16c1a5';
+        var client = require('twilio')(accountSid, authToken);
+
+        client.sendMessage({
+            to: '+' + cellPhone, // Any number Twilio can deliver to
+            from: '+18455354126', // A number you bought from Twilio and can use for outbound communication
+            body: 'Hello ' + email + ', Thanks for joining RainOrShine!' // body of the SMS message
+        }, function(err, responseData) { //this function is executed when a response is received from Twilio
+            if (!err) { // "err" is an error received during the request, if any
+            console.log(responseData.from);
+            console.log(responseData.to);
+            console.log(responseData.body);
+            }
+        });
+
+
     }
 }
 

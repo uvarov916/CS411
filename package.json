@@ -10,7 +10,8 @@
     "mongodb": "~1.4.34",
     "swig": "~0.14.0",
     "validator": "~1.1.3",
-    "request": "*"
+    "request": "*",
+    "twilio": "*"
   },
   "devDependencies": {},
   "scripts": {
