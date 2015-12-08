@@ -945,6 +945,11 @@ select {
 .text-right {
   text-align: right; }
 
+.weather-icon {
+  width: 80px;
+  height: 80px;
+  font-size: 80px; }
+
 * {
   font-family: proxima-nova, "Proxima Nova", Helvetica, Arial, sans-serif; }
 
@@ -1007,10 +1012,11 @@ select {
 
 .inside-app .location-card {
   background: white;
-  width: 400px;
+  width: 500px;
   padding-top: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0px 0px 4px #9B9B9B; }
+  box-shadow: 0px 0px 4px #9B9B9B;
+  border-radius: 2px; }
   .inside-app .location-card .temperature {
     position: absolute;
     text-align: right;
@@ -1023,12 +1029,18 @@ select {
   .inside-app .location-card .location-title {
     margin: 0;
     font-weight: 300;
-    font-size: 22px; }
+    font-size: 22px;
+    width: 60%; }
   .inside-app .location-card .details {
     font-size: 16px;
     font-weight: 300;
     color: #8D8D8D;
-    margin: .25rem 0; }
+    margin: .25rem 0;
+    width: 60%; }
+  .inside-app .location-card .weather-icon {
+    position: absolute;
+    right: 2rem;
+    bottom: 1rem; }
   .inside-app .location-card a {
     color: #6FB127; }
   .inside-app .location-card a.delete {
@@ -1042,6 +1054,20 @@ select {
     margin-top: 1rem; }
     .inside-app .location-card .card-footer a {
       margin-right: 1rem; }
+  .inside-app .location-card.no-footer {
+    padding-bottom: 1rem; }
+  .inside-app .location-card h3 {
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: .25rem; }
+  .inside-app .location-card .weather-weekly-day {
+    margin-top: 1.5rem;
+    position: relative; }
+    .inside-app .location-card .weather-weekly-day .weather-icon {
+      bottom: 2rem;
+      right: 0; }
 
 #promo header {
   position: relative;

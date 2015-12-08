@@ -134,10 +134,36 @@ function ContentHandler(db) {
 
   	
 	  	getWeatherData(loc.latitude, loc.longtitude, function(weather) {
-	  		var currentTemp = weather.currently.temperature;
+	  		var currentWeather = {
+	  			"summary": weather.currently.summary,
+	  			"temperature": Math.round(weather.currently.temperature),
+	  			"apparentTemperature": Math.round(weather.currently.apparentTemperature),
+	  			"precipProbability": weather.currently.precipProbability,
+	  			"windSpeed": weather.currently.windSpeed,
+	  			"iconClass": getIconClass(weather.currently.icon)
+	  		}
+
+	  		var weatherThisWeek = [];
+	  		var dailyData = weather.daily.data;
+
+	  		for (var key in dailyData) {
+		    	var temp = {}
+		        temp.iconClass = getIconClass(dailyData[key].icon);
+		        temp.summary = dailyData[key].summary;
+
+		        var d = new Date(dailyData[key].time * 1000);
+		        temp.date = getDayString(d.getDay());
+
+		        temp.minTemp = dailyData[key].temperatureMin;
+		        temp.maxTemp = dailyData[key].temperatureMax;
+
+		        weatherThisWeek.push(temp);
+		    }
+
 	  		return res.render("weather_in_saved_location", {
-				temperature : currentTemp,
-				loc: loc
+				"location": loc,
+				"currentWeather": currentWeather,
+				"weatherThisWeek": weatherThisWeek
 			});
 	  	
 	    });
@@ -222,6 +248,66 @@ function getWeatherData(latitude, longtitude, callback) {
 	    if (callback) callback(JSON.parse(body));
 	  }
 	});
+}
+
+function getDayString(dayNumber) {
+  
+  var dayString = "Undefined";
+
+  switch(dayNumber) {
+    case 0:
+        var dayString = "Sunday";
+        break;
+    case 1:
+        var dayString = "Monday";
+        break;
+    case 2:
+        var dayString = "Tuesday";
+        break;
+    case 3:
+        var dayString = "Wednesday";
+        break;
+    case 4:
+        var dayString = "Thursday";
+        break;
+    case 5:
+        var dayString = "Friday";
+        break;
+    case 6:
+        var dayString = "Saturday";
+        break;
+    default:
+        var dayString = "Number is out of range";
+  }
+
+  return dayString;
+}
+
+function getIconClass(currentIcon) {
+  var iconClassToRender = "";
+  if (currentIcon == "clear-day") {
+    iconClassToRender = "icon-sun";
+  } else if (currentIcon == "clear-night") {
+    iconClassToRender = "icon-moon";
+  } else if (currentIcon == "rain") {
+    iconClassToRender = "icon-rainy";
+  } else if (currentIcon == "snow") {
+    iconClassToRender = "icon-snowy";
+  } else if (currentIcon == "sleet") {
+    iconClassToRender = "icon-sleet";
+  } else if (currentIcon == "wind") {
+    iconClassToRender = "icon-windy";
+  } else if (currentIcon == "fog") {
+    iconClassToRender = "icon-mist";
+  } else if (currentIcon == "cloudy") {
+    iconClassToRender = "icon-cloud";
+  } else if (currentIcon == "partly-cloudy-day") {
+    iconClassToRender = "icon-cloud";
+  } else if (currentIcon == "partly-cloudy-night") {
+    iconClassToRender = "icon-cloud";
+  }
+
+  return iconClassToRender;
 }
 
 module.exports = ContentHandler;

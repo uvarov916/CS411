@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Weather In Location</title>
-	</head>
-	
-	<body>
+{% extends 'layout.html' %}
 
-		<h1>Weather In Location</h1>
+{% block title %}Weather in Location{% endblock %}
 
-		<a href="/">Home</a>
-		<a href="/my_locations">My Locations</a>
-		<a href="/settings">Settings</a>
-		<a href="/logout">Logout</a>
 
-		<p>
-			<a href="/save_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">Save This Location</a>
-		</p>
+{% block content %}
 
-		<p>
-			Temperature: {{temperature}}
-		</p>
+	<h1>Weather In Location</h1>
 
-	</body>
-</html>
+	<p>
+		<a href="/save_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">Save This Location</a>
+	</p>
+
+	<p>
+		Temperature: {{temperature}}
+	</p>
+
+{% endblock %}
