@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>My Location</title>
-	</head>
-	
-	<body>
+{% extends 'layout.html' %}
 
-		<h1>My Locations</h1>
+{% block title %}My Locations{% endblock %}
 
-		<a href="/">Home</a>
-		<a href="/my_locations">My Locations</a>
-		<a href="/settings">Settings</a>
-		<a href="/logout">Logout</a>
 
-		{% for loc in locations %}
-		  <p>
-		  	<a href="/weather_in_saved_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">{{ loc.name }}</a>
-		  	<a href="/delete_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">delete</a>
-		  </p>
-		{% endfor %}
+{% block content %}
 
-	</body>
-</html>
+	<h1>My Locations</h1>
+
+	{% for loc in locations %}
+	  <p>
+	  	<a href="/weather_in_saved_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">{{ loc.name }}</a>
+	  	<a href="/delete_location?location_name={{loc.name}}&location_longtitude={{loc.longtitude}}&location_latitude={{loc.latitude}}">delete</a>
+	  </p>
+	{% endfor %}
+
+{% endblock %}

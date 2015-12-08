@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Dashboard</title>
-	</head>
-	
-	<body>
+{% extends 'layout.html' %}
 
-		<h1>Dashboard</h1>
-
-		<p>Your email is {{ email }}</p>
-
-		<a href="/">Home</a>
-		<a href="/my_locations">My Locations</a>
-		<a href="/settings">Settings</a>
-		<a href="/logout">Logout</a>
-
-		<h2>Here we will have a search field.</h2>
-		<form action="/weather_in_location" method="GET">
-			<input type="text" name="location_search_term" placeholder="Enter location"/>
-			<input type="submit" value="Search">
-		</form>
+{% block title %}Home{% endblock %}
 
 
-	</body>
-</html>
+{% block content %}
+
+	<h1>Home</h1>
+
+	<p>Your email is {{ email }}</p>
+
+	<h2>Here we will have a search field.</h2>
+	<form action="/weather_in_location" method="GET">
+		<input type="text" name="location_search_term" placeholder="Enter location"/>
+		<input type="submit" value="Search">
+	</form>
+
+{% endblock %}

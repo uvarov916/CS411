@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}My Site{% endblock %}</title>
+
+  {% block head %}
+  <link rel="stylesheet" type="text/css" href="/css/app.css">
+  {% endblock %}
+</head>
+<body class="inside-app">
+
+<header>
+   <div class="row">
+       <div class="columns small-12 medium-4 medium-offset-1 title">
+           <a href="/">Rain Or Shine</a>
+       </div>
+       <div class="columns left small-12 medium-6 text-right right-nav">
+           <ul>
+               <li><a href="/">Home</a></li>
+               <li><a href="/my_locations">My Locations</a></li>
+               <li><a href="/settings">Settings</a></li>
+               <li><a href="/logout">Logout</a></li>
+           </ul>
+       </div>
+   </div>
+</header>
+
+<div class="row">
+	<div class="columns small-12 medium-10 small-centered">
+		{% block content %}{% endblock %}
+	</div>
+</div>
+
+</body>
+</html>

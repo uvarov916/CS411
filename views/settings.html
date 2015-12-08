@@ -1,27 +1,25 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Settings</title>
-	</head>
-	
-	<body>
+{% extends 'layout.html' %}
 
-		<h1>Settings</h1>
+{% block title %}Settings{% endblock %}
 
-		<a href="/">Home</a>
-		<a href="/my_locations">My Locations</a>
-		<a href="/settings">Settings</a>
-		<a href="/logout">Logout</a>
 
-		<form method="post">
-			
-			<label>Phone Number</label>
-			<input type="text" name="cell_phone" value="">
-			<br>
+{% block content %}
 
-			<input type="submit" value="Save Settings">
+	<h1>Settings</h1>
+
+	<a href="/">Home</a>
+	<a href="/my_locations">My Locations</a>
+	<a href="/settings">Settings</a>
+	<a href="/logout">Logout</a>
+
+	<form method="post">
 		
-		</form>
+		<label>Phone Number</label>
+		<input type="text" name="cell_phone" value="">
+		<br>
 
-	</body>
-</html>
+		<input type="submit" value="Save Settings">
+	
+	</form>
+
+{% endblock %}

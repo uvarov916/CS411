@@ -7,7 +7,9 @@ var express = require("express"),
     cons = require("consolidate"),
     MongoClient = require("mongodb").MongoClient,
     routes = require("./routes"),
-    request = require("request");
+    request = require("request"),
+    swig = require('swig'),
+    path = require('path');
 
 MongoClient.connect('mongodb://127.0.0.1:27017/rainorshine', function(err, db) {
     "use strict";
@@ -20,13 +22,19 @@ MongoClient.connect('mongodb://127.0.0.1:27017/rainorshine', function(err, db) {
     // ------------------------------------------
 
     // Setting up view engine
-    app.engine("html", cons.swig);
+    app.engine("html", swig.renderFile);
     app.set("view engine", "html");
     app.set("views", __dirname + "/views");
+
+    // REMOVE FOR PRODUCTION
+    app.set('view cache', false);
+    swig.setDefaults({ cache: false });
 
     // Middleware
     app.use(express.cookieParser()); // to get cookies
     app.use(express.bodyParser()); // to get POST variables
+
+    app.use(express.static(path.join(__dirname, 'public')));
 
     // App routes
     routes(app, db);
