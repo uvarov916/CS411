@@ -1219,7 +1219,9 @@ select {
         border: none;
         border: 1px solid #E8E8E8;
         border-radius: 4px;
-        padding-left: 1rem; }
+        padding-left: 1rem;
+        font-size: 16px;
+        font-weight: 300; }
     .authentication .card input[type="submit"] {
       border: none;
       background: #6FB127;
