@@ -11,7 +11,7 @@ var express = require("express"),
     swig = require('swig'),
     path = require('path');
 
-MongoClient.connect('mongodb://127.0.0.1:27017/rainorshine', function(err, db) {
+MongoClient.connect('mongodb://heroku_l34smxcf:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {
     "use strict";
     
     // Error connecting to the database
