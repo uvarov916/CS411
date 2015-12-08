@@ -40,6 +40,9 @@ module.exports = exports = function(app, db) {
 
     app.post('/weather_in_location', contentHandler.displayWeatherInSearchedLocation);
 
+    app.get('/save_location', contentHandler.saveLocation);
+    app.get('/delete_location', contentHandler.deleteLocation);
+
     app.get('*', function(req, res, next) {
         res.redirect("/");
     });

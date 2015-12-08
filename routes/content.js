@@ -34,7 +34,19 @@ function ContentHandler(db) {
 		"use strict";
 
 		if (req.logged_in == true) {
-			return res.render("my_locations");
+
+			users.getSavedLocations(req.email, function(err, result) {
+				
+				if (!err) {
+					console.log("Rendering the following locations: ");
+					console.log(result);
+					return res.render("my_locations");
+				}
+
+				console.log("Couldn't retrieve locations for the user.")
+				
+				return res.render("my_locations");
+			})
 		}
 		else {
 			return res.redirect("/");
@@ -79,6 +91,57 @@ function ContentHandler(db) {
 		    });
 		});
 	} 
+
+	this.saveLocation = function(req, res, next) {
+		"use strict";
+
+		// DOESN'T CHECK IF INSERT A DUPLICATE
+
+		if (req.logged_in == true) {
+
+			var location_name = req.query.location_name;
+			var location_longtitude = req.query.location_longtitude;
+			var location_latitude = req.query.location_latitude;
+
+			var loc = {
+				"name": location_name,
+				"longtitude": location_longtitude,
+				"latitude": location_latitude
+			}
+			users.addNewLocation(req.email, loc, function(err, result) {
+				return res.redirect("/my_locations");
+			});
+
+		}
+		else {
+			return res.redirect("/");
+		}
+	}
+
+	this.deleteLocation = function(req, res, next) {
+		"use strict";
+
+		if (req.logged_in == true) {
+
+			var location_name = req.query.location_name;
+			var location_longtitude = req.query.location_longtitude;
+			var location_latitude = req.query.location_latitude;
+
+			var loc = {
+				"name": location_name,
+				"longtitude": location_longtitude,
+				"latitude": location_latitude
+			}
+
+			users.deleteSavedLocation(req.email, loc, function(err, result) {
+				return res.redirect("/my_locations");
+			});
+
+		}
+		else {
+			return res.redirect("/");
+		}
+	}
 }
 
 // NEED TO CHECK FOR INCORRECT LOCATION INPUT

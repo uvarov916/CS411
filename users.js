@@ -70,14 +70,49 @@ function UsersDAO(db) {
     // ------------------------------------------
 
     this.getSavedLocations = function(email, callback) {
-        
+        users.findOne({"_id": email}, function(err, result) {
+            if (!err) {
+                console.log("Location for the user retrieved.");
+                return callback(null, result["saved_locations"]);
+            }
+
+            return callback(err, null);
+        });
     } 
-    this.addNewLocation = function(longtitue, altitude, callback) {
+
+    this.addNewLocation = function(email, loc, callback) {
         
+        //  loc should be a dictionary of the following format:
+        //  {
+        //      "name": "Boston",
+        //      "longtitude": 123,
+        //      "latitude": 123 
+        //  }
+
+
+        users.update({"_id": email}, {$push: {"saved_locations": loc}}, function(err, result) {
+            if (!err) {
+                console.log("Added new location to the user.");
+                return callback(null, result[0]);
+            }
+
+            return callback(err, null);
+        });
     } 
-    this.removeSavedLocation = function(locationId, callback) {
+
+    this.deleteSavedLocation = function(email, loc, callback) {
         
-    }
+        users.update({"_id": email}, {$pull: {"saved_locations": loc}}, function(err, result) {
+            if (!err) {
+                console.log("Deleted location from user.");
+                return callback(null, result[0]);
+            }
+
+            return callback(err, null);
+        });
+    } 
+
+
     this.setCellPhone = function(email, cellPhone, callback) {
         //console.log(email, cellPhone);
         users.update( { "_id": email } , { $set : { "cell_phone": cellPhone }}, function(err, result) {
