@@ -90,7 +90,7 @@ function UsersDAO(db) {
         //  }
 
 
-        users.update({"_id": email}, {$push: {"saved_locations": loc}}, function(err, result) {
+        users.update({"_id": email}, {$addToSet: {"saved_locations": loc}}, function(err, result) {
             if (!err) {
                 console.log("Added new location to the user.");
                 return callback(null, result[0]);
