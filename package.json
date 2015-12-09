@@ -12,7 +12,8 @@
     "request": "*",
     "twilio": "*",
     "swig": "*",
-    "path": "*"
+    "path": "*",
+    "cron": "*"
   },
   "devDependencies": {
     "bower": "^1.6.5",

@@ -5,7 +5,11 @@ function ContentHandler(db) {
     "use strict";
 
     var users = new UsersDAO(db);
-
+    
+    // Twilio Config
+    var accountSid = 'AC741c25b02127a7f89bfd89398cbb7b39';
+    var authToken = 'ec0331d000609e234d0f045d8d16c1a5';
+    var client = require('twilio')(accountSid, authToken);
 
     this.displayHomePage = function(req, res, next) {
         "use strict";
@@ -209,7 +213,6 @@ function ContentHandler(db) {
         });
     }
 
-
     this.saveLocation = function(req, res, next) {
         "use strict";
 
@@ -226,10 +229,62 @@ function ContentHandler(db) {
                 "longtitude": location_longtitude,
                 "latitude": location_latitude
             }
-            users.addNewLocation(req.email, loc, function(err, result) {
-                return res.redirect("/my_locations");
+
+            /*  If user has a cell-phone linked with their account, send a text
+             *  at specified time (see CronJob) everyday with weather info for this saved location
+             *
+             *  NOTE: NEED TO SKIP CRONJOB CREATION IF USER HAS NO PHONE NUMBER
+            */
+            users.getPhoneNumber(req.email, function(err, phoneNumber) {
+
+                getWeatherData(location_longtitude, location_latitude, function(weatherData) {
+                    var locationWeather = {
+                        "name": location_name,
+                        "summary": weatherData.currently.summary,
+                        "temperature": Math.round(weatherData.currently.temperature)
+                        //"apparentTemperature": Math.round(weatherData.currently.apparentTemperature)
+                    }
+
+                    // We now have the user's phone number and weather info
+                    // console.log(phoneNumber);
+
+                    // CronJob Dependency
+                    var CronJob = require('cron').CronJob;
+                    /* Create a cron job then run it */
+                    var job = new CronJob({
+                        // Schedule job using military time
+                        // Ex:  '00 45 18 * * 1-5' 
+                        //       --> Perform task at 6:45:00 PM, Mon(1) through Fri(5)  
+                        cronTime: '00 02 19 * * 0-6',
+                        onTick: function() {
+                            // Send text with current weather info to user
+                            client.sendMessage({
+                                to: '+' + phoneNumber, // Any number Twilio can deliver to
+                                from: '+18455354126', // A number you bought from Twilio and can use for outbound communication
+                                body: 'Weather in ' + locationWeather.name + ":\n" 
+                                                    + locationWeather.summary + "\n"
+                                                    + locationWeather.temperature + " degrees \n"
+                                                    + "--rainOrShine--"// body of the SMS message
+                            }, function(err, responseData) { //this function is executed when a response is received from Twilio
+                                if (!err) { // "err" is an error received during the request, if any
+                                console.log(responseData.from);
+                                console.log(responseData.to);
+                                console.log(responseData.body);
+                                }
+                            });
+                        },
+                        start: false
+                    });
+                    job.start();
+
+                });
+
             });
 
+            users.addNewLocation(req.email, loc, function(err, result) {
+
+                return res.redirect("/my_locations");
+            });
         }
         // Redirect to home page if not logged in
         else {
