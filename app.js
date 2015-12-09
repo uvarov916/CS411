@@ -8,11 +8,28 @@ var express = require("express"),
     routes = require("./routes"),
     request = require("request"),
     swig = require('swig'),
-    path = require('path');
+    path = require('path'),
+    redis = require('redis');
 
 process.on('uncaughtException', function (err) {
   console.error(err);
   console.log("Some fucking exception...");
+});
+
+
+// Connects to Heroku Redis for production,
+// or to local version of Redis
+if (process.env.REDIS_URL) {
+    var client = require('redis').createClient(process.env.REDIS_URL);
+}
+else {
+    var client = require('redis').createClient();
+}
+
+client.on('connect', function() {
+    console.log('-- CONNECTED TO REDIS');
+    client.set('redis', 'is working!');
+    client.expire('redis', 100);
 });
 
 MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {

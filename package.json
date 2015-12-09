@@ -13,7 +13,8 @@
     "twilio": "*",
     "swig": "*",
     "path": "*",
-    "cron": "*"
+    "cron": "*",
+    "redis": "*"
   },
   "devDependencies": {
     "bower": "^1.6.5",
