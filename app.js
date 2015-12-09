@@ -10,6 +10,11 @@ var express = require("express"),
     swig = require('swig'),
     path = require('path');
 
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Some fucking exception...");
+});
+
 MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {
     "use strict";
     

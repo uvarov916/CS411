@@ -115,11 +115,11 @@ function ContentHandler(db) {
 
         // Prevents app from crashing upon invalid search location, reloads page
         // TO DO: return an error message
-        process.on('uncaughtException', function (err) {
-          console.error(err);
-          console.log("Bad search...");
-          return res.redirect("/");
-        });
+        // process.on('uncaughtException', function (err) {
+        //   console.error(err);
+        //   console.log("Bad search...");
+        //   return res.redirect("/");
+        // });
 
         var userLocation = req.query.location_search_term;
         console.log(userLocation);
