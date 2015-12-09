@@ -125,8 +125,8 @@ function ContentHandler(db) {
         console.log(userLocation);
 
         getLocationData(userLocation, function(err, mylocdata) {
-            if (err) {
-                res.redirect("/");
+            if (err || typeof mylocdata.results[0] === "undefined") {
+                return res.redirect("/");
             }
 
             var loc = {}
