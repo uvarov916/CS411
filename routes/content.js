@@ -124,7 +124,11 @@ function ContentHandler(db) {
         var userLocation = req.query.location_search_term;
         console.log(userLocation);
 
-        getLocationData(userLocation, function(mylocdata) {
+        getLocationData(userLocation, function(err, mylocdata) {
+            if (err) {
+                res.redirect("/");
+            }
+
             var loc = {}
             loc["name"] = mylocdata.results[0].formatted_address;
             loc["longtitude"] = mylocdata.results[0].geometry.location.lng;
@@ -334,7 +338,10 @@ function getLocationData(inputAddress, callback) {
     
     request(geocodingUrl, function(error, response, body) {
         if (!error && response.statusCode == 200) {
-            if (callback) callback(JSON.parse(body));
+            return callback(null, JSON.parse(body));
+        }
+        else {
+            return callback(error, null)
         }
     });
 }
