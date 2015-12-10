@@ -11,10 +11,12 @@ var express = require("express"),
     path = require('path'),
     redis = require('redis');
 
-process.on('uncaughtException', function (err) {
-  console.error(err);
-  console.log("Some fucking exception...");
-});
+var helpFunctions = require('./help_functions');
+
+// process.on('uncaughtException', function (err) {
+//   console.error(err);
+//   console.log("Some fucking exception...");
+// });
 
 
 // Connects to Heroku Redis for production,
@@ -27,14 +29,20 @@ else {
 }
 
 redisClient.on('connect', function() {
-    console.log('-- CONNECTED TO REDIS');
+    console.log("CONNTECTED TO REDIS");
 });
 
 MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {
     "use strict";
     
+    console.log("CONNTECTED TO MONGO");
+
     // Error connecting to the database
     if (err) throw err;
+
+    helpFunctions.sendTextsToEverybody(db, redisClient);
+
+
 
     // ------------------------------------------
     // APP SETTINGS
@@ -60,6 +68,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
 
     // App routes
     routes(app, db, redisClient);
+
 
     // ------------------------------------------
     // LAUNCH APP

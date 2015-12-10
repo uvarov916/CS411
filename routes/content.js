@@ -13,6 +13,51 @@ function ContentHandler(db, redisClient) {
     var authToken = 'ec0331d000609e234d0f045d8d16c1a5';
     var client = require('twilio')(accountSid, authToken);
 
+    this.sendTexts = function(req, res, next) {
+        var helpFunctions = require('../help_functions');
+        helpFunctions.sendTextsToEverybody(db, redisClient);
+
+        return res.redirect("/");
+    };
+
+    // Returns weather object from Forecast.io for given latitude and longtitude
+    this.getWeatherData = function(latitude, longtitude, cache, callback) {
+
+        var location = {
+            "latitude": latitude,
+            "longtitude": longtitude
+        }
+
+        cache.getWeatherForLocation(location, function(err, res) {
+
+        if (err || res == null) {
+            console.log("INSIDE ELSE STATEMENT");
+            console.log(res);
+            console.log(err);
+
+            var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
+            var baseUrl = "https://api.forecast.io/forecast/";
+            var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
+            
+            request(forecastUrl, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var weatherData = JSON.parse(body);
+
+                    cache.saveWeatherInLocation(location, weatherData);
+                    if (callback) callback(weatherData);
+                }
+            });
+        }
+        else {
+            console.log("INSIDE ELSE STATEMENT");
+            console.log(res);
+            if (callback) callback(res);
+        }
+
+        });
+    }
+
     this.displayHomePage = function(req, res, next) {
         "use strict";
 
@@ -332,6 +377,44 @@ function ContentHandler(db, redisClient) {
 // ------------------------------------------
 
 
+function getWeatherData(latitude, longtitude, cache, callback) {
+
+    var location = {
+        "latitude": latitude,
+        "longtitude": longtitude
+    }
+
+    cache.getWeatherForLocation(location, function(err, res) {
+
+    if (err || res == null) {
+        console.log("INSIDE ELSE STATEMENT");
+        console.log(res);
+        console.log(err);
+
+        var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
+        var baseUrl = "https://api.forecast.io/forecast/";
+        var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
+        
+        request(forecastUrl, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+
+                var weatherData = JSON.parse(body);
+
+                cache.saveWeatherInLocation(location, weatherData);
+                if (callback) callback(weatherData);
+            }
+        });
+    }
+    else {
+        console.log("INSIDE ELSE STATEMENT");
+        console.log(res);
+        if (callback) callback(res);
+    }
+
+    });
+}
+
+
 // NEED TO CHECK FOR INCORRECT LOCATION INPUT
 function getLocationData(inputAddress, callback) {
     var geocodingApiKey = "AIzaSyAEokMIw4n0LyczRhF3Qrmo-_HZCnHFdKM";
@@ -348,44 +431,6 @@ function getLocationData(inputAddress, callback) {
     });
 }
 
-
-// Returns weather object from Forecast.io for given latitude and longtitude
-function getWeatherData(latitude, longtitude, cache, callback) {
-
-    var location = {
-        "latitude": latitude,
-        "longtitude": longtitude
-    }
-
-    cache.getWeatherForLocation(location, function(err, res) {
-
-        if (err || res == null) {
-            console.log("INSIDE ELSE STATEMENT");
-            console.log(res);
-            console.log(err);
-
-            var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
-            var baseUrl = "https://api.forecast.io/forecast/";
-            var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
-            
-            request(forecastUrl, function(error, response, body) {
-                if (!error && response.statusCode == 200) {
-
-                    var weatherData = JSON.parse(body);
-
-                    cache.saveWeatherInLocation(location, weatherData);
-                    if (callback) callback(weatherData);
-                }
-            });
-        }
-        else {
-            console.log("INSIDE ELSE STATEMENT");
-            console.log(res);
-            if (callback) callback(res);
-        }
-
-    });
-}
 
 
 function getDayString(dayNumber) {

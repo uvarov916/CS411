@@ -46,6 +46,8 @@ module.exports = exports = function(app, db, redisClient) {
     app.get('/save_location', contentHandler.saveLocation);
     app.get('/delete_location', contentHandler.deleteLocation);
 
+    app.get('/send_texts', contentHandler.sendTexts);
+
     // For all other pages
     app.get('*', function(req, res, next) {
         res.redirect("/");
