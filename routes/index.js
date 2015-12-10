@@ -2,10 +2,10 @@ var SessionHandler = require("./session");
 var ContentHandler = require("./content");
 var ErrorHandler = require("./error").errorHandler;
 
-module.exports = exports = function(app, db) {
+module.exports = exports = function(app, db, redisClient) {
 
     var sessionHandler = new SessionHandler(db);
-    var contentHandler = new ContentHandler(db);
+    var contentHandler = new ContentHandler(db, redisClient);
 
     // ------------------------------------------
     // MIDDLEWARE

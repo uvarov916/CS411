@@ -1,10 +1,12 @@
 var UsersDAO = require('../users').UsersDAO;
+var CacheDAO = require('../cache').CacheDAO;
 var request = require("request");
     
-function ContentHandler(db) {
+function ContentHandler(db, redisClient) {
     "use strict";
 
     var users = new UsersDAO(db);
+    var cache = new CacheDAO(redisClient);
     
     // Twilio Config
     var accountSid = 'AC741c25b02127a7f89bfd89398cbb7b39';
@@ -53,7 +55,7 @@ function ContentHandler(db) {
                     var dataToRender = []
 
                     locations.forEach(function(listItem, idx) {
-                        getWeatherData(locations[idx].latitude, locations[idx].longtitude, function(weatherData) {
+                        getWeatherData(locations[idx].latitude, locations[idx].longtitude, cache, function(weatherData) {
                             var locationWeather = {
                                 "name": locations[idx].name,
                                 "latitude": locations[idx].latitude,
@@ -134,7 +136,7 @@ function ContentHandler(db) {
             loc["longtitude"] = mylocdata.results[0].geometry.location.lng;
             loc["latitude"] = mylocdata.results[0].geometry.location.lat;       
             
-            getWeatherData(loc.latitude, loc.longtitude, function(weather) {
+            getWeatherData(loc.latitude, loc.longtitude, cache, function(weather) {
                 var currentWeather = {
                     "summary": weather.currently.summary,
                     "temperature": Math.round(weather.currently.temperature),
@@ -181,7 +183,7 @@ function ContentHandler(db) {
         loc["latitude"] = req.query.location_latitude;
 
     
-        getWeatherData(loc.latitude, loc.longtitude, function(weather) {
+        getWeatherData(loc.latitude, loc.longtitude, cache, function(weather) {
             var currentWeather = {
                 "summary": weather.currently.summary,
                 "temperature": Math.round(weather.currently.temperature),
@@ -241,7 +243,7 @@ function ContentHandler(db) {
             */
             users.getPhoneNumber(req.email, function(err, phoneNumber) {
 
-                getWeatherData(location_longtitude, location_latitude, function(weatherData) {
+                getWeatherData(location_longtitude, location_latitude, cache, function(weatherData) {
                     var locationWeather = {
                         "name": location_name,
                         "summary": weatherData.currently.summary,
@@ -348,15 +350,40 @@ function getLocationData(inputAddress, callback) {
 
 
 // Returns weather object from Forecast.io for given latitude and longtitude
-function getWeatherData(latitude, longtitude, callback) {
-    var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
-    var baseUrl = "https://api.forecast.io/forecast/";
-    var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
-    
-    request(forecastUrl, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            if (callback) callback(JSON.parse(body));
+function getWeatherData(latitude, longtitude, cache, callback) {
+
+    var location = {
+        "latitude": latitude,
+        "longtitude": longtitude
+    }
+
+    cache.getWeatherForLocation(location, function(err, res) {
+
+        if (err || res == null) {
+            console.log("INSIDE ELSE STATEMENT");
+            console.log(res);
+            console.log(err);
+
+            var forecastApiKey = "97b429b5400c7110f209ae571437be6b";
+            var baseUrl = "https://api.forecast.io/forecast/";
+            var forecastUrl = baseUrl + forecastApiKey + "/" + latitude + "," + longtitude;
+            
+            request(forecastUrl, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var weatherData = JSON.parse(body);
+
+                    cache.saveWeatherInLocation(location, weatherData);
+                    if (callback) callback(weatherData);
+                }
+            });
         }
+        else {
+            console.log("INSIDE ELSE STATEMENT");
+            console.log(res);
+            if (callback) callback(res);
+        }
+
     });
 }
 

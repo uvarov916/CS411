@@ -20,16 +20,14 @@ process.on('uncaughtException', function (err) {
 // Connects to Heroku Redis for production,
 // or to local version of Redis
 if (process.env.REDIS_URL) {
-    var client = require('redis').createClient(process.env.REDIS_URL);
+    var redisClient = require('redis').createClient(process.env.REDIS_URL);
 }
 else {
-    var client = require('redis').createClient();
+    var redisClient = require('redis').createClient();
 }
 
-client.on('connect', function() {
+redisClient.on('connect', function() {
     console.log('-- CONNECTED TO REDIS');
-    client.set('redis', 'is working!');
-    client.expire('redis', 100);
 });
 
 MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {
@@ -61,7 +59,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     app.use(express.static(path.join(__dirname, 'public')));
 
     // App routes
-    routes(app, db);
+    routes(app, db, redisClient);
 
     // ------------------------------------------
     // LAUNCH APP
