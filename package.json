@@ -1,11 +1,10 @@
 {
-  "name": "RainOrShine",
+  "name": "Rain Or Shine",
   "version": "0.0.1",
   "description": "Final project for CS411.",
   "main": "app.js",
   "dependencies": {
     "bcrypt-nodejs": "~0.0.3",
-    "consolidate": "~0.9.1",
     "express": "~3.5",
     "mongodb": "~1.4.34",
     "validator": "~1.1.3",

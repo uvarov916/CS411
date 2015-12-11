@@ -13,10 +13,10 @@ var express = require("express"),
 
 var helpFunctions = require('./help_functions');
 
-// process.on('uncaughtException', function (err) {
-//   console.error(err);
-//   console.log("Some fucking exception...");
-// });
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Some fucking exception...");
+});
 
 
 // Connects to Heroku Redis for production,
@@ -40,7 +40,7 @@ MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/her
     // Error connecting to the database
     if (err) throw err;
 
-    helpFunctions.sendTextsToEverybody(db, redisClient);
+    // helpFunctions.sendTextsToEverybody(db, redisClient);
 
 
 

@@ -37,20 +37,13 @@ module.exports = {
                 console.log("There was an error in cursor: " + err);
             }
 
-            console.log("NEXT OBJECT: ");
-            console.dir(user);
-
             var phoneNumber = "+" + user["cell_phone"];
             var savedLocation = user["saved_locations"][0]["name"];
             console.log("SENDING TEXT TO: " + phoneNumber);
 
             var cache = new CacheDAO(redis)
 
-            console.log("LATITUDE: " + user["saved_locations"][0]["latitude"]);
-            console.log("LONGTITUDE: " + user["saved_locations"][0]["longtitude"]);
-
             content.getWeatherData(user["saved_locations"][0]["latitude"], user["saved_locations"][0]["longtitude"], cache, function(weather) {
-                console.log("CURREEEEENT WEATHER: " + weather.currently.summary);
 
                 var message = savedLocation + ": " + weather.currently.summary;
 
