@@ -9,15 +9,20 @@ var express = require("express"),
     request = require("request"),
     swig = require('swig'),
     path = require('path'),
-    redis = require('redis');
+    redis = require('redis'),
+    helpFunctions = require('./help_functions'),
+    sercretVariables = require('./secret_variables');
 
-var helpFunctions = require('./help_functions');
 
+// ------------------------------------------
+// SETTINGS
+// ------------------------------------------
+
+// Catch all exceptions so app doesn't crash
 process.on('uncaughtException', function (err) {
   console.error(err);
-  console.log("Some fucking exception...");
+  console.log("Oops. There was some error that we didn't expect.");
 });
-
 
 // Connects to Heroku Redis for production,
 // or to local version of Redis
@@ -27,54 +32,52 @@ if (process.env.REDIS_URL) {
 else {
     var redisClient = require('redis').createClient();
 }
-
 redisClient.on('connect', function() {
-    console.log("CONNTECTED TO REDIS");
+    console.log("--> CONNTECTED TO REDIS <--");
 });
 
-MongoClient.connect('mongodb://mainuser:fr4frfsg@ds027335.mongolab.com:27335/heroku_l34smxcf', function(err, db) {
+
+// ------------------------------------------
+// CONNECT TO MONGO AND LAUNCH THE APP
+// ------------------------------------------
+
+MongoClient.connect(sercretVariables.mongoConnectionUrl, function(err, db) {
     "use strict";
     
-    console.log("CONNTECTED TO MONGO");
-
     // Error connecting to the database
-    if (err) throw err;
+    if (err) {
+        console.log("Couldn't establish database connection.");
+        throw err;
+    }
+    console.log("--> CONNTECTED TO MONGO <--");
 
-    // helpFunctions.sendTextsToEverybody(db, redisClient);
 
-
-
-    // ------------------------------------------
-    // APP SETTINGS
-    // ------------------------------------------
-
-    // Setting up view engine
+    // View engine
     app.engine("html", swig.renderFile);
     app.set("view engine", "html");
     app.set("views", __dirname + "/views");
-
-    // Turn off caching (for development only)
+    
+    // Uncomment to turn off caching (for development only)
     // app.set('view cache', false);
     // swig.setDefaults({ cache: false });
+
 
     // Middleware
     app.use(express.cookieParser()); // to get cookies
     app.use(express.bodyParser()); // to get POST variables
 
+    // Make static files publicly available
+    app.use(express.static(path.join(__dirname, 'public')));
+
     // Use default Heroku port
     app.set('port', (process.env.PORT || 5000));
 
-    app.use(express.static(path.join(__dirname, 'public')));
-
-    // App routes
+    // Set up app routes
     routes(app, db, redisClient);
 
 
-    // ------------------------------------------
-    // LAUNCH APP
-    // ------------------------------------------
 
     app.listen(app.get('port'), function() {
-      console.log('Node app is running on port', app.get('port'));
+      console.log('The app is running on port ', app.get('port'));
     });
 });

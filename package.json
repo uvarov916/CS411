@@ -27,7 +27,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "https://github.com/uvarovis/CS411",
   "author": "Hwa-seung Erstling, Duomin Ji, Jarrod Lewis and Ivan Uvarov",
   "license": "MIT",
   "private": true
